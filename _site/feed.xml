@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>geneticswithme</title>
+    <description>Yuanyuan Zhang, a ph.D student working on Animal Genetics.
+</description>
+    <link>http://zhangyy.site/</link>
+    <atom:link href="http://zhangyy.site/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Wed, 13 Jul 2016 18:43:04 -0400</pubDate>
+    <lastBuildDate>Wed, 13 Jul 2016 18:43:04 -0400</lastBuildDate>
+    <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Welcome to Jekyll!</title>
+        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+
+&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+
+&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 13 Jul 2016 17:53:40 -0400</pubDate>
+        <link>http://zhangyy.site/jekyll/update/2016/07/13/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/jekyll/update/2016/07/13/welcome-to-jekyll.html</guid>
+        
+        
+        <category>jekyll</category>
+        
+        <category>update</category>
+        
+      </item>
+    
+      <item>
+        <title>从Affy Axiom的CEL文件导出LRR和BAF</title>
+        <description>&lt;p&gt;不知道LRR和BAF是什么？没关系，说明还用不上这两个东西，等有需要的时候再来参考本文吧。
+还是以鸡的Affymetrix Axiom（&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_chicken&lt;/code&gt;）芯片为例。其他物种方法相同，仅将芯片注释文件换成相应物种的注释文件即可。&lt;/p&gt;
+
+&lt;p&gt;一 准备文件和下载APT软件&lt;/p&gt;
+
+&lt;p&gt;1、新建文件夹&lt;code class=&quot;highlighter-rouge&quot;&gt;cel_files&lt;/code&gt;，将CEL文件都放入该文件夹内。&lt;/p&gt;
+
+&lt;p&gt;2、下载该芯片的解析文件。进入Affymetrix官网，”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt; Library Files”中下载”Axiom Genome Wide Chicken Analysis Files”(约59MB)，下载下来的文件其实是&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken_Analysis.r1.zip&lt;/code&gt;。解压为Analysis_r1文件夹，里面的情况大概是这样子的。
+&lt;img src=&quot;analysis_r1.jpeg&quot; alt=&quot;analysis_r1&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;3、下载该芯片的SNP位点的注释文件。”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt;Current NetAffx Annotation Files”，下载CSV格式的注释文件（44MB），实际文件名为&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv.zip&lt;/code&gt;。解压后得到&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv&lt;/code&gt;文件。&lt;/p&gt;
+
+&lt;p&gt;4、下载Affymetrix Power Tools软件包。按计算机系统下载相应版本的APT，目前支持windows、MAC OS和Linux，都是64位的。解压为apt文件夹，apt下的bin文件夹中是编译好的可执行程序，windows请在MS-DOS下使用，linux和mac用户请打开终端。&lt;/p&gt;
+
+&lt;p&gt;5、将上述四个文件或文件夹放到工作目录&lt;code class=&quot;highlighter-rouge&quot;&gt;workdir&lt;/code&gt;中，文件结构是这样的：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;workdir - - apt &amp;lt;directory&amp;gt;
+		|
+		- - cel_files &amp;lt;directory&amp;gt;
+		|
+		- - Analysis_r1 &amp;lt;directory&amp;gt;
+		|
+		- - Axiom_GW_GT_Chicken.na35.annot.csv &amp;lt;csv file&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;6、准备&lt;code class=&quot;highlighter-rouge&quot;&gt;celfiles.txt&lt;/code&gt;。打开终端执行以下命令。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;workdir
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;cel_files &amp;gt;celfiles.txt
+ls cel_files| sed &lt;span class=&quot;s1&quot;&gt;&#39;s/^/\.cel_files\/&amp;amp;/&#39;&lt;/span&gt; &amp;gt;&amp;gt;celfiles.txt&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;二、Affymetrix Power Tools处理CEL文件&lt;/p&gt;
+
+&lt;p&gt;1、 Analysis DQC&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./apt/bin/apt-geno-qc 
+	-a Analysis_r1/Axiom_GW_GT_Chicken.r1.qca
+	-q Analysis_r1/Axiom_GW_GT_Chicken.r1.qcc
+	-c Analysis_r1/Axiom_GW_GT_Chicken.r1.cdf
+	--chrZ-probes Analysis_r1/Axiom_GW_GT_Chicken.r1.chrZprobes 
+	--chrW-probes Analysis_r1/Axiom_GW_GT_Chicken.r1.chrWprobes 
+	--target-sketch Analysis_r1/Axiom_GW_GT_Chicken.r1.AxiomGT1.sketch 
+	--cel-files celfiles.txt&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;上述命令等同于，&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./apt/bin/apt-geno-qc 
+	-xml-file Analysis_r1/Axiom_GW_GT_Chicken.r1.apt-geno-qc.AxiomQC1.xml
+	--analysis-files-path Analysis_r1
+	--cel-files celfiles.txt&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;生成&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-geno-qc.log&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-geno-qc.report.txt&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;2、提取QC后的个体，生成新的&lt;code class=&quot;highlighter-rouge&quot;&gt;qc_celfiles.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# R 中执行操作&lt;/span&gt;
+setwd&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;workdir&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+qc.file&amp;lt;-read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;apt-geno-qc.report.txt&quot;&lt;/span&gt;,header&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;T&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+after.qc&amp;lt;-qc.file[qc.file[,&lt;span class=&quot;s2&quot;&gt;&quot;axiom_dishqc_DQC&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&amp;gt;0.82,]
+celfiles&amp;lt;-paste0（“./cel_files/”，after.qc[,1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+write.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;celfiles,file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;qc_celfiles.txt&quot;&lt;/span&gt;,col.names&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cel_files&quot;&lt;/span&gt;,sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;,quote&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;3、Analysis QC step1&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./apt/bin/apt-probeset-genotype
+	--cel-files qc_celfiles.txt 
+	--analysis-files-path Analysis_r1
+	--xml-file Analysis_r1/Axiom_GW_GT_Chicken_96orMore_Step1.r1.apt-probeset-genotype.AxiomGT1.xml
+	--summaries 
+	--write-models&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;生成&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-probeset-genotype.log&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.calls.txt&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.confidences.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.normalized-summary.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.report.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.snp-posteriors.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.summary.txt&lt;/code&gt;文件。&lt;/p&gt;
+
+&lt;p&gt;4、提取CALL RATE 大于0.97的个体，生成新的&lt;code class=&quot;highlighter-rouge&quot;&gt;qc2_celfiles.txt&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# R 中执行操作&lt;/span&gt;
+setwd&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;workdir&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+qc2.file&amp;lt;-read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AxiomGT1.report.txt&quot;&lt;/span&gt;,header&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;T&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+after.qc2&amp;lt;-qc2.file[qc2.file[,&lt;span class=&quot;s2&quot;&gt;&quot;call_rate&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&amp;gt;0.97,]
+celfiles2&amp;lt;-paste0（“./cel_files/”，after.qc2[,1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+write.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;celfiles2,file&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;qc2_celfiles.txt&quot;&lt;/span&gt;,col.names&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cel_files&quot;&lt;/span&gt;,sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\t&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;,quote&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;5、Analysis QC step2&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./apt/bin/apt-probeset-genotype
+	--cel-files qc_celfiles.txt 
+	--analysis-files-path Analysis_r1
+	--xml-file Analysis_r1/Axiom_GW_GT_Chicken_96orMore_Step2.r1.apt-probeset-genotype.AxiomGT1.xml
+	--summaries 
+	--write-models&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;生成&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-probeset-genotype.log&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.calls.txt&lt;/code&gt;,&lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.confidences.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.normalized-summary.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.report.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.snp-posteriors.txt&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.summary.txt&lt;/code&gt;文件，会覆盖Step1中产生的文件。&lt;/p&gt;
+
+&lt;p&gt;三、根据&lt;code class=&quot;highlighter-rouge&quot;&gt;AxiomGT1.summary.txt&lt;/code&gt;计算LRR和BAF。
+下载&lt;code class=&quot;highlighter-rouge&quot;&gt;cal_lrr_baf.R&lt;/code&gt;。地址：&lt;code class=&quot;highlighter-rouge&quot;&gt;https://github.com/geneticswithme/hello_genetics/blob/master/cal_lrr_baf.R&lt;/code&gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;n&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;cal_lrr_baf.R&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cal_LRR_BAF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;calls.file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AxiomGT1.calls.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;summary.file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AxiomGT1.summary.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;annotation.file&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Axiom_GW_GT_Chicken.na35.annot.csv&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;LRR.output.name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;LRR.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BAF.output.name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;BAF.txt&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;生成LRR和BAF文件。&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 29 Nov 2015 00:00:00 -0500</pubDate>
+        <link>http://zhangyy.site/notes/2015/11/29/AffyLRR_BAF.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/11/29/AffyLRR_BAF.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+  </channel>
+</rss>
