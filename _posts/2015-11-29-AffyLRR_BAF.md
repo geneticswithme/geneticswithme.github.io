@@ -13,7 +13,7 @@ categories: notes
 1、新建文件夹`cel_files`，将CEL文件都放入该文件夹内。
 
 2、下载该芯片的解析文件。进入Affymetrix官网，"Products > Microarry Solutions > DNA Analysis Solutions > Agrigenomics Solutions > Arrays > Species > Chicken > Axiom® Genome-Wide Chicken Genotyping Array > Technical Documents > Library Files"中下载"Axiom Genome Wide Chicken Analysis Files"(约59MB)，下载下来的文件其实是`Axiom_GW_GT_Chicken_Analysis.r1.zip`。解压为Analysis_r1文件夹，里面的情况大概是这样子的。
-![analysis_r1](analysis_r1.jpeg) 
+![analysis_r1](/assets/images/analysis_r1.jpeg) 
 
 3、下载该芯片的SNP位点的注释文件。"Products > Microarry Solutions > DNA Analysis Solutions > Agrigenomics Solutions > Arrays > Species > Chicken > Axiom® Genome-Wide Chicken Genotyping Array > Technical Documents >Current NetAffx Annotation Files"，下载CSV格式的注释文件（44MB），实际文件名为`Axiom_GW_GT_Chicken.na35.annot.csv.zip`。解压后得到`Axiom_GW_GT_Chicken.na35.annot.csv`文件。
 
