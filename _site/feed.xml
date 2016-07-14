@@ -6,8 +6,8 @@
 </description>
     <link>http://zhangyy.site/</link>
     <atom:link href="http://zhangyy.site/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 13 Jul 2016 23:30:51 -0400</pubDate>
-    <lastBuildDate>Wed, 13 Jul 2016 23:30:51 -0400</lastBuildDate>
+    <pubDate>Wed, 13 Jul 2016 23:34:23 -0400</pubDate>
+    <lastBuildDate>Wed, 13 Jul 2016 23:34:23 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -54,61 +54,6 @@
         <pubDate>Tue, 12 Jul 2016 00:00:00 -0400</pubDate>
         <link>http://zhangyy.site/notes/2016/07/12/geneticsDist.html</link>
         <guid isPermaLink="true">http://zhangyy.site/notes/2016/07/12/geneticsDist.html</guid>
-        
-        
-        <category>notes</category>
-        
-      </item>
-    
-      <item>
-        <title>计算LD decay(LD衰减)</title>
-        <description>&lt;p&gt;这次是介绍如何计算LD，并作出LD decay plot。&lt;/p&gt;
-
-&lt;p&gt;首先推荐一篇文献，作者们都是男神。&lt;/p&gt;
-
-&lt;p&gt;Linkage Disequilibrium and Persistence of Phase in Holstein-Friesian jersey and Angus Cattle, Roos et al. Genetics(2008)&lt;/p&gt;
-
-&lt;p&gt;文章中关于LD的概念，LD的计算方法，如何用LD推断Ne（有效群体大小）以及persistence of LD都讲得清楚。作出类似Figure1的图是本篇的主要目的。
-&lt;img src=&quot;/images/2016-03-04figure1_LD.png&quot; alt=&quot;test_plot&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;衡量LD主要有D’和r2两个统计量，D’受到位点频率的影响，因而不如r2稳健。一般地，用r2来衡量位点之间LD的大小。
-plink1.07 虽然提供了&lt;code class=&quot;highlighter-rouge&quot;&gt;--r2&lt;/code&gt;命令来计算位点之间的连锁关系，但是这个命令的解释也说了“this calculates for each SNP the correlation between two variables, coded 0,1 or 2 to represent the number of non-reference alleles at each. The squared correlation based on genotypic allele counts is therefore not identical to the r-sq as estimated from haplotype frequencies, although it will typically be very similar.” 因而不推荐用此方法计算LD。&lt;/p&gt;
-
-&lt;p&gt;LD的r2值可以由Haploview软件完成。Haploview除了提供图形界面操作，还可以用命令行运行。计算r2的命令行如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java -jar Haploview.jar -nogui -pedfile example.ped -info example.info -dprime&lt;/code&gt;&lt;/p&gt;
-
-&lt;p&gt;生成的example.ped.ld文件中则包括了r2，这里的计算忽略了长度超过500kb的LD，如需修改可参考Haploview的帮助文档.&lt;/p&gt;
-
-&lt;p&gt;example.ped和example.info文件可以由plink软件转换，&lt;code class=&quot;highlighter-rouge&quot;&gt;plink --bfile example --recodeHV --out example&lt;/code&gt;，则生成ped和info格式。&lt;/p&gt;
-
-&lt;p&gt;接下来是划定物理距离的间隔计算区间，计算某段物理位置之内的LD平均值，用以代表该物理位置的LD水平，所以，划定的区间不宜过大。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;df&amp;lt;- read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;example.ped.ld&quot;&lt;/span&gt;,header&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;T&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;,c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5,8&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#读取LD值&lt;/span&gt;
-dist&amp;lt;- c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;seq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0,100000,5000&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#计算0-100kb之间的LD衰减，每隔5kb计算一次LD平均值&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#定义计算LD均值公式&lt;/span&gt;
-ld_avg&amp;lt;- &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld,dist&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-	ld_out&amp;lt;-c&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;1:&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;length&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dist&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;-1&lt;span class=&quot;o&quot;&gt;)){&lt;/span&gt;
-	index&amp;lt;-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld[,2]&amp;lt; dist[i+1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;amp;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld[,2]&amp;gt;dist[i]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	ld_out[i]&amp;lt;-mean&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld[index,1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-	ld_decay&amp;lt;-cbind&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld_out,dist[-1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld_decay&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#计算example.ped.ld 的平均LD&lt;/span&gt;
-example_LDdecay &amp;lt;- ld_avg&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;df,dist&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#作图&lt;/span&gt;
-png&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;example_ldDecay.png&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;example_LDdecay[,2],example_LDdecay[,1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/2016-03-04test.png&quot; alt=&quot;test_plot&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Sat, 05 Mar 2016 00:00:00 -0500</pubDate>
-        <link>http://zhangyy.site/notes/2016/03/05/ldDecay.html</link>
-        <guid isPermaLink="true">http://zhangyy.site/notes/2016/03/05/ldDecay.html</guid>
         
         
         <category>notes</category>
@@ -675,6 +620,37 @@ column7 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C4, Position on fourth di
         <pubDate>Tue, 07 Apr 2015 00:00:00 -0400</pubDate>
         <link>http://zhangyy.site/notes/2015/04/07/GWAS4mds.html</link>
         <guid isPermaLink="true">http://zhangyy.site/notes/2015/04/07/GWAS4mds.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>利用PLINK进行GWAS分析（三）</title>
+        <description>&lt;p&gt;数据清洗/质量控制&amp;lt;/br&amp;gt;
+质控这一步剔除低质量的SNP和样本，一般对以下两个方面进行质控：&amp;lt;/br&amp;gt;
+（1）样本质控：剔除SNP检出率过低的样本，一般剔除分型率低于90%的样本，&lt;code class=&quot;highlighter-rouge&quot;&gt;--mind 0.1&lt;/code&gt;&amp;lt;/br&amp;gt;
+（2）SNP质控：剔除检出率过低的SNP，一般剔除SNP call rate低于90%的SNP，&lt;code class=&quot;highlighter-rouge&quot;&gt;--geno 0.1&lt;/code&gt;；剔除最小等位基因频率MAF低于0.05的SNP，&lt;code class=&quot;highlighter-rouge&quot;&gt;--maf 0.05&lt;/code&gt;；剔除严重偏离哈代温伯格平衡的SNP，&lt;code class=&quot;highlighter-rouge&quot;&gt;--hwe 1e-5&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;quality filters:&amp;lt;/br&amp;gt;
+SNP call rate &amp;lt; 90%&amp;lt;/br&amp;gt;
+Individual call rate &amp;lt; 90%&amp;lt;/br&amp;gt;
+HWE pvalue &amp;lt; 1e-5&amp;lt;/br&amp;gt;
+MAF &amp;lt; 0.01&lt;br /&gt;&lt;/p&gt;
+
+&lt;p&gt;根据上述条件，利用PLINK进行质控：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#在windows下打开cmd，输入&lt;/span&gt;
+plink --file &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --maf 0.01 --mind 0.1 --geno 0.1 --hwe 1e-5  --make-bed --out test_qc
+&lt;span class=&quot;c&quot;&gt;#质控后的数据，改写成二进制格式，命名为test_qc。&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;得到文件&lt;code class=&quot;highlighter-rouge&quot;&gt;test_qc.bed&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;test_qc.bim&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;test_qc.fam&lt;/code&gt;，留下作为后续分析的输入文件。&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 05 Apr 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/04/05/GWAS3qc.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/04/05/GWAS3qc.html</guid>
         
         
         <category>notes</category>
