@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>About</title>
-  <meta name="description" content="Yuanyuan Zhang, a ph.D student working on Animal Genetics.
-">
+  <title>计算LD decay(LD衰减)</title>
+  <meta name="description" content="这次是介绍如何计算LD，并作出LD decay plot。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://zhangyy.site/about/">
+  <link rel="canonical" href="http://zhangyy.site/notes/2016/03/05/ldDecay.html">
   <link rel="alternate" type="application/rss+xml" title="geneticswithme" href="http://zhangyy.site/feed.xml">
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -61,16 +60,56 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <article class="post">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title">About</h1>
+    <h1 class="post-title" itemprop="name headline">计算LD decay(LD衰减)</h1>
+    <p class="post-meta"><time datetime="2016-03-05T00:00:00-05:00" itemprop="datePublished">Mar 5, 2016</time></p>
   </header>
 
-  <div class="post-content">
-    <p>This is the blog built by Yuanyuan Zhang. I am working on animal genetics, most of my work are about population genetics and genomics in sheep and chicken.
-You may follow me on <a href="https://twitter.com/quz_44">Twitter</a>.
-I also share some codes about genetics&amp;genomics analysis at <a href="http:https://github.com/geneticswithme">geneticswithme</a></p>
+  <div class="post-content" itemprop="articleBody">
+    <p>这次是介绍如何计算LD，并作出LD decay plot。</p>
+
+<p>首先推荐一篇文献，作者们都是男神。</p>
+
+<p>Linkage Disequilibrium and Persistence of Phase in Holstein-Friesian jersey and Angus Cattle, Roos et al. Genetics(2008)</p>
+
+<p>文章中关于LD的概念，LD的计算方法，如何用LD推断Ne（有效群体大小）以及persistence of LD都讲得清楚。作出类似Figure1的图是本篇的主要目的。
+<img src="/images/2016-03-04figure1_LD.png" alt="test_plot" /></p>
+
+<p>衡量LD主要有D’和r2两个统计量，D’受到位点频率的影响，因而不如r2稳健。一般地，用r2来衡量位点之间LD的大小。
+plink1.07 虽然提供了<code class="highlighter-rouge">--r2</code>命令来计算位点之间的连锁关系，但是这个命令的解释也说了“this calculates for each SNP the correlation between two variables, coded 0,1 or 2 to represent the number of non-reference alleles at each. The squared correlation based on genotypic allele counts is therefore not identical to the r-sq as estimated from haplotype frequencies, although it will typically be very similar.” 因而不推荐用此方法计算LD。</p>
+
+<p>LD的r2值可以由Haploview软件完成。Haploview除了提供图形界面操作，还可以用命令行运行。计算r2的命令行如下：</p>
+
+<p><code class="highlighter-rouge">java -jar Haploview.jar -nogui -pedfile example.ped -info example.info -dprime</code></p>
+
+<p>生成的example.ped.ld文件中则包括了r2，这里的计算忽略了长度超过500kb的LD，如需修改可参考Haploview的帮助文档.</p>
+
+<p>example.ped和example.info文件可以由plink软件转换，<code class="highlighter-rouge">plink --bfile example --recodeHV --out example</code>，则生成ped和info格式。</p>
+
+<p>接下来是划定物理距离的间隔计算区间，计算某段物理位置之内的LD平均值，用以代表该物理位置的LD水平，所以，划定的区间不宜过大。</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">df&lt;- read.table<span class="o">(</span> <span class="s2">"example.ped.ld"</span>,header<span class="o">=</span>T<span class="o">)[</span>,c<span class="o">(</span>5,8<span class="o">)]</span> <span class="c">#读取LD值</span>
+dist&lt;- c<span class="o">(</span>seq<span class="o">(</span>0,100000,5000<span class="o">))</span> <span class="c">#计算0-100kb之间的LD衰减，每隔5kb计算一次LD平均值</span>
+<span class="c">#定义计算LD均值公式</span>
+ld_avg&lt;- <span class="k">function</span><span class="o">(</span>ld,dist<span class="o">)</span> <span class="o">{</span>
+	ld_out&lt;-c<span class="o">()</span>
+	<span class="k">for</span> <span class="o">(</span>i <span class="k">in </span>1:<span class="o">(</span>length<span class="o">(</span>dist<span class="o">)</span>-1<span class="o">)){</span>
+	index&lt;-<span class="o">(</span>ld[,2]&lt; dist[i+1]<span class="o">)</span>&amp;<span class="o">(</span>ld[,2]&gt;dist[i]<span class="o">)</span>
+	ld_out[i]&lt;-mean<span class="o">(</span>ld[index,1]<span class="o">)</span>
+	<span class="o">}</span>
+	ld_decay&lt;-cbind<span class="o">(</span>ld_out,dist[-1]<span class="o">)</span>
+	<span class="k">return</span><span class="o">(</span>ld_decay<span class="o">)</span>
+<span class="o">}</span>
+<span class="c">#计算example.ped.ld 的平均LD</span>
+example_LDdecay &lt;- ld_avg<span class="o">(</span>df,dist<span class="o">)</span>
+<span class="c">#作图</span>
+png<span class="o">(</span><span class="s2">"example_ldDecay.png"</span><span class="o">)</span>
+plot<span class="o">(</span>example_LDdecay[,2],example_LDdecay[,1]<span class="o">)</span>
+dev.off<span class="o">()</span></code></pre></figure>
+
+<p><img src="/images/2016-03-04test.png" alt="test_plot" /></p>
 
 
   </div>
