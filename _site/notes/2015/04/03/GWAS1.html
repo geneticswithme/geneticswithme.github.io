@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>利用PLINK进行GWAS分析（一）</title>
+  <meta name="description" content="仅供参考。">
+
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="canonical" href="http://zhangyy.site/notes/2015/04/03/GWAS1.html">
+  <link rel="alternate" type="application/rss+xml" title="geneticswithme" href="http://zhangyy.site/feed.xml">
+  <script type="text/javascript" src="/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+</head>
+
+
+  <body>
+    
+
+    <header class="site-header">
+
+  <div class="wrapper">
+
+    <a class="site-title" href="/">geneticswithme</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg viewBox="0 0 18 15">
+          <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+
+      <div class="trigger">
+        
+          
+          <a class="page-link" href="/about/">About</a>
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">利用PLINK进行GWAS分析（一）</h1>
+    <p class="post-meta"><time datetime="2015-04-03T00:00:00-04:00" itemprop="datePublished">Apr 3, 2015</time></p>
+  </header>
+
+  <div class="post-content" itemprop="articleBody">
+    <p>仅供参考。</p>
+
+<p>利用PLINK软件完成整个GWAS分析，其实一点也不复杂。只要按照既定的分析流程，都可以得到分析结果。但是为了使自己的工作真正有意义，必须要理解每一步处理的原理和目的，
+从而根据不同的试验设计，调整数据处理过程。</p>
+
+<p>这里列出的GWAS分析流程以Illumina 的SNP数据为例。如果你手头上的是Affy或者其他平台的芯片数据，处理方法也是类似。
+1、原始数据整理为PLINK可识别的文件
+2、利用PLINK读取整理后的数据
+3、利用PLINK进行数据质控
+4、利用PLINK计算群体结构
+5、利用PLINK进行关联分析
+6、对分析结果进行图形展示</p>
+
+<p>首先进行数据整理。需要将Illumina的原始数据整理为可被PLINK软件识别的PED/MAP文件类型。PED文件和MAP文件都是文本文件，可以被文本编辑器打开。PED文件主要包括每个试验个体的SNP数据和试验群体的家系等信息。MAP文件主要列出的是SNP位点的名称和位置信息。
+关于PED/MAP文件的详细格式，PLINK软件的document中有详细说明，这里不再叙述。</p>
+
+<p>这里的数据处理都是在Windows系统下进行。但是还是建议大家学习linux，渐渐把自己的工作移到linux平台下。</p>
+
+<p>1、MAP文件的获得</p>
+
+<p>原始数据中，一般都会有MAP文件，但是往往参考基因组版本老旧。所以需要对MAP文件进行更新。
+有个网站<a href="http://bioinformatics.tecnoparco.org/SNPchimp/">SNPchiMp</a>，提供几种农业动物的SNP芯片数据的MAP文件下载。根据网站提示可以很容易获得最新版本的SNP物理位置数据，稍微编辑一下即可得到MAP文件。</p>
+
+<p>SNPchiMp网页的截图
+<img src="/images/20140402-snpchimp.png" alt="SNPchiMp_Screenshot" /></p>
+
+<p>2、下载GenomeStudio软件</p>
+
+<p>GenomeStudio软件是用来读取Illumina 芯片原始数据，进行数据查看的，输出数据的软件。可以在Illumina官网下载安装。因为分析的是SNP芯片数据，所以只需注册GenomeStudio的Genotyping module即可。如果需要GenomeStudio 的Genotyping Module的注册码，可以联系我。</p>
+
+<p>GenomeStudio的说明详见<a href="http://www.illumina.com.cn/informatics/sequencing-microarray-data-analysis/genomestudio.aspx">GenomeStudio</a>，Genotyping Module的<a href="http://support.illumina.com/content/dam/illumina-support/documents/myillumina/d2c2c169-36c7-4613-89d6-bf34588a7624/genomestudio_gt_module_v1.0_ug_11319113_reva.pdf">User Guide</a>。&lt;/br&gt;
+在Genotyping Module上安装PLINK插件，可以由此将原始数据输出为PLINK的PED格式的SNP数据。</p>
+
+<p>3、利用GenomeStudio输出PED文件</p>
+
+<p>Analysis→Reports→Repost Wizard
+<img src="/images/GenomeStudio-screenshot2.png" alt="output-screenshot" />
+自定义输出格式，Custom Report→PLINK Input Report
+<img src="/images/GenomeStudio-screenshot3.png" alt="output-screenshot2" />
+按照提示操作输出PED文件。</p>
+
+<p>4、整理MAP文件和PED文件</p>
+
+<p>最好将MAP文件和PED文件统一命名，例如<code class="highlighter-rouge">test.ped</code>和<code class="highlighter-rouge">test.map</code>。注意，文件格式一定要符合PLINK软件的要求。
+如需查看MAP和PED文件，可以下载Notepad++软件，利用Notepad++软件打开。Windows自带的文本编辑器不容易打开比较大的文本文档。</p>
+
+<p>5、PLINK软件的下载与安装</p>
+
+<p>下载地址<a href="http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml">PLINK v1.07</a>，这里下载的是1.07版本，目前最新的PLINK版本为1.09。这两个版本之间做了很大的改变，1.09版本明显好用了很多。但读取数据和基本分析命令都是差不多的，这里仅以1.07版本举例说明。根据自己的操作系统下载相应版本的软件，Windows系统的，下载MS-DOS版本。&lt;/br&gt;
+下载好的PLINK软件包加压后得到的文件夹包括plink.exe和gPLINK.jar两个程序，gPLINK.jar是依赖Java的图形界面化程序，plink.exe是在dos下运行的命令行程序。两者本质一样，运行方式不同。个人觉得plink.exe更灵活好用一些。</p>
+
+<p>6、运行plink.exe</p>
+
+<p>windows系统下同时按下键盘上的【开始】+R两个键，打开<code class="highlighter-rouge">运行</code>，输入<code class="highlighter-rouge">cmd</code>，回车后进入命令提示符界面。
+<img src="/assets/images/dos.png" alt="dos" /></p>
+
+<p>整理好得文件为<code class="highlighter-rouge">test.ped</code>和<code class="highlighter-rouge">test.map</code>文件。放入G盘下的test文件夹中，plink.exe程序同样放入该文件夹中。</p>
+
+<p>命令提示符后输入<code class="highlighter-rouge">G:</code>进入G盘目录下，输入<code class="highlighter-rouge">cd test</code>进入test目录，输入<code class="highlighter-rouge">dir</code>，查看当前目录的情况，可以看到有三个文件，分别是<code class="highlighter-rouge">test.ped</code>，<code class="highlighter-rouge">test.map</code>和<code class="highlighter-rouge">plink.exe</code>。&lt;/br&gt;
+这个时候直接输入<code class="highlighter-rouge">plink</code>，可以见到如下情况，提示没有输入文件。
+<img src="/assets/images/dos2.png" alt="dos2" />
+输入<code class="highlighter-rouge">plink --file test</code>，就可以看到plink读入的<code class="highlighter-rouge">test.ped</code>和<code class="highlighter-rouge">test.map</code>两个文件的结果。</p>
+
+
+  </div>
+
+</article>
+
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+
+    <h2 class="footer-heading">geneticswithme</h2>
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>geneticswithme</li>
+          <li><a href="mailto:yyzhang@cau.edu.cn">yyzhang@cau.edu.cn</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          
+          <li>
+            <a href="https://github.com/geneticswithme"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">geneticswithme</span></a>
+
+          </li>
+          
+
+          
+          <li>
+            <a href="https://twitter.com/quz_44"><span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span><span class="username">quz_44</span></a>
+
+          </li>
+          
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>Yuanyuan Zhang, a ph.D student working on Animal Genetics.
+</p>
+      </div>
+    </div>
+
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

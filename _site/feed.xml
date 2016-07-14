@@ -6,35 +6,112 @@
 </description>
     <link>http://zhangyy.site/</link>
     <atom:link href="http://zhangyy.site/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 13 Jul 2016 18:43:04 -0400</pubDate>
-    <lastBuildDate>Wed, 13 Jul 2016 18:43:04 -0400</lastBuildDate>
+    <pubDate>Wed, 13 Jul 2016 23:30:51 -0400</pubDate>
+    <lastBuildDate>Wed, 13 Jul 2016 23:30:51 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
-        <title>Welcome to Jekyll!</title>
-        <description>&lt;p&gt;You’ll find this post in your &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory. Go ahead and edit it and re-build the site to see your changes. You can rebuild the site in many different ways, but the most common way is to run &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll serve&lt;/code&gt;, which launches a web server and auto-regenerates your site when a file is updated.&lt;/p&gt;
+        <title>Reynolds distance</title>
+        <description>&lt;p&gt;A pdf of equation for various measures of genetic distance can be download from &lt;a href=&quot;http://www.uwyo.edu/dbmcd/molmark/gendisteqns.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-&lt;p&gt;To add new posts, simply add a file in the &lt;code class=&quot;highlighter-rouge&quot;&gt;_posts&lt;/code&gt; directory that follows the convention &lt;code class=&quot;highlighter-rouge&quot;&gt;YYYY-MM-DD-name-of-post.ext&lt;/code&gt; and includes the necessary front matter. Take a look at the source for this post to get an idea about how it works.&lt;/p&gt;
+&lt;p&gt;Reynolds distance:
+&lt;script type=&quot;math/tex&quot;&gt;\theta_w = \sqrt{\frac{\sum_l\sum_u (X_u -Y_u)^2}{2\sum_l(1-\sum_u X_u Y_u)}}&lt;/script&gt;&lt;/p&gt;
 
-&lt;p&gt;Jekyll also offers powerful support for code snippets:&lt;/p&gt;
+&lt;p&gt;R codes as below:&lt;/p&gt;
 
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Hi, &lt;/span&gt;&lt;span class=&quot;si&quot;&gt;#{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
-&lt;span class=&quot;n&quot;&gt;print_hi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;Tom&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;c1&quot;&gt;#=&amp;gt; prints &#39;Hi, Tom&#39; to STDOUT.&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;n&quot;&gt;reynolds_distance&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;popnames&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;npop&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nloc&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ncol&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;matrix&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nrow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;npop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ncol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;npop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;npop&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;-1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+    &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;in&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;+1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;npop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+      &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+      &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pj&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+      
+      &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sqrt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pj&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;**&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pj&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pj&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+    &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+  &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rownames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;colnames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;popnames&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+  &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
 
-&lt;p&gt;Check out the &lt;a href=&quot;http://jekyllrb.com/docs/home&quot;&gt;Jekyll docs&lt;/a&gt; for more info on how to get the most out of Jekyll. File all bugs/feature requests at &lt;a href=&quot;https://github.com/jekyll/jekyll&quot;&gt;Jekyll’s GitHub repo&lt;/a&gt;. If you have questions, you can ask them on &lt;a href=&quot;https://talk.jekyllrb.com/&quot;&gt;Jekyll Talk&lt;/a&gt;.&lt;/p&gt;
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;###example
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set.seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;44&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runif&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runif&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rbind&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reynolds_distance&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dist&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#          pop1      pop2
+# pop1 0.0000000 0.4416244
+&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.4416244&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.0000000&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+</description>
+        <pubDate>Tue, 12 Jul 2016 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2016/07/12/geneticsDist.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2016/07/12/geneticsDist.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>计算LD decay(LD衰减)</title>
+        <description>&lt;p&gt;这次是介绍如何计算LD，并作出LD decay plot。&lt;/p&gt;
+
+&lt;p&gt;首先推荐一篇文献，作者们都是男神。&lt;/p&gt;
+
+&lt;p&gt;Linkage Disequilibrium and Persistence of Phase in Holstein-Friesian jersey and Angus Cattle, Roos et al. Genetics(2008)&lt;/p&gt;
+
+&lt;p&gt;文章中关于LD的概念，LD的计算方法，如何用LD推断Ne（有效群体大小）以及persistence of LD都讲得清楚。作出类似Figure1的图是本篇的主要目的。
+&lt;img src=&quot;/images/2016-03-04figure1_LD.png&quot; alt=&quot;test_plot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;衡量LD主要有D’和r2两个统计量，D’受到位点频率的影响，因而不如r2稳健。一般地，用r2来衡量位点之间LD的大小。
+plink1.07 虽然提供了&lt;code class=&quot;highlighter-rouge&quot;&gt;--r2&lt;/code&gt;命令来计算位点之间的连锁关系，但是这个命令的解释也说了“this calculates for each SNP the correlation between two variables, coded 0,1 or 2 to represent the number of non-reference alleles at each. The squared correlation based on genotypic allele counts is therefore not identical to the r-sq as estimated from haplotype frequencies, although it will typically be very similar.” 因而不推荐用此方法计算LD。&lt;/p&gt;
+
+&lt;p&gt;LD的r2值可以由Haploview软件完成。Haploview除了提供图形界面操作，还可以用命令行运行。计算r2的命令行如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java -jar Haploview.jar -nogui -pedfile example.ped -info example.info -dprime&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;生成的example.ped.ld文件中则包括了r2，这里的计算忽略了长度超过500kb的LD，如需修改可参考Haploview的帮助文档.&lt;/p&gt;
+
+&lt;p&gt;example.ped和example.info文件可以由plink软件转换，&lt;code class=&quot;highlighter-rouge&quot;&gt;plink --bfile example --recodeHV --out example&lt;/code&gt;，则生成ped和info格式。&lt;/p&gt;
+
+&lt;p&gt;接下来是划定物理距离的间隔计算区间，计算某段物理位置之内的LD平均值，用以代表该物理位置的LD水平，所以，划定的区间不宜过大。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;df&amp;lt;- read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;example.ped.ld&quot;&lt;/span&gt;,header&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;T&lt;span class=&quot;o&quot;&gt;)[&lt;/span&gt;,c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5,8&lt;span class=&quot;o&quot;&gt;)]&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#读取LD值&lt;/span&gt;
+dist&amp;lt;- c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;seq&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0,100000,5000&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#计算0-100kb之间的LD衰减，每隔5kb计算一次LD平均值&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#定义计算LD均值公式&lt;/span&gt;
+ld_avg&amp;lt;- &lt;span class=&quot;k&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld,dist&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+	ld_out&amp;lt;-c&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;1:&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;length&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dist&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;-1&lt;span class=&quot;o&quot;&gt;)){&lt;/span&gt;
+	index&amp;lt;-&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld[,2]&amp;lt; dist[i+1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;amp;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld[,2]&amp;gt;dist[i]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	ld_out[i]&amp;lt;-mean&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld[index,1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+	ld_decay&amp;lt;-cbind&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld_out,dist[-1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ld_decay&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#计算example.ped.ld 的平均LD&lt;/span&gt;
+example_LDdecay &amp;lt;- ld_avg&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;df,dist&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#作图&lt;/span&gt;
+png&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;example_ldDecay.png&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;example_LDdecay[,2],example_LDdecay[,1]&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/2016-03-04test.png&quot; alt=&quot;test_plot&quot; /&gt;&lt;/p&gt;
 
 </description>
-        <pubDate>Wed, 13 Jul 2016 17:53:40 -0400</pubDate>
-        <link>http://zhangyy.site/jekyll/update/2016/07/13/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://zhangyy.site/jekyll/update/2016/07/13/welcome-to-jekyll.html</guid>
+        <pubDate>Sat, 05 Mar 2016 00:00:00 -0500</pubDate>
+        <link>http://zhangyy.site/notes/2016/03/05/ldDecay.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2016/03/05/ldDecay.html</guid>
         
         
-        <category>jekyll</category>
-        
-        <category>update</category>
+        <category>notes</category>
         
       </item>
     
@@ -48,7 +125,7 @@
 &lt;p&gt;1、新建文件夹&lt;code class=&quot;highlighter-rouge&quot;&gt;cel_files&lt;/code&gt;，将CEL文件都放入该文件夹内。&lt;/p&gt;
 
 &lt;p&gt;2、下载该芯片的解析文件。进入Affymetrix官网，”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt; Library Files”中下载”Axiom Genome Wide Chicken Analysis Files”(约59MB)，下载下来的文件其实是&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken_Analysis.r1.zip&lt;/code&gt;。解压为Analysis_r1文件夹，里面的情况大概是这样子的。
-&lt;img src=&quot;analysis_r1.jpeg&quot; alt=&quot;analysis_r1&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/images/analysis_r1.jpeg&quot; alt=&quot;analysis_r1&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;3、下载该芯片的SNP位点的注释文件。”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt;Current NetAffx Annotation Files”，下载CSV格式的注释文件（44MB），实际文件名为&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv.zip&lt;/code&gt;。解压后得到&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv&lt;/code&gt;文件。&lt;/p&gt;
 
@@ -144,6 +221,460 @@ write.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;celfiles2,file&lt;span 
         <pubDate>Sun, 29 Nov 2015 00:00:00 -0500</pubDate>
         <link>http://zhangyy.site/notes/2015/11/29/AffyLRR_BAF.html</link>
         <guid isPermaLink="true">http://zhangyy.site/notes/2015/11/29/AffyLRR_BAF.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>和PLINK一样简单好用的SNPTEST</title>
+        <description>&lt;p&gt;SNPTEST也是一款优秀的GWAS分析的软件。官方说明页面&lt;a href=&quot;https://mathgen.stats.ox.ac.uk/genetics_software/snptest/snptest.html&quot;&gt;在这里&lt;/a&gt;
+&lt;img src=&quot;/assets/images/20150812-1.png&quot; alt=&quot;pic&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;linux下操作。&lt;/p&gt;
+
+&lt;p&gt;1、准备输入文件&lt;/p&gt;
+
+&lt;p&gt;还是从PLINK的PED和MAP文件开始。再安利一款格式转化小工具 &lt;a href=&quot;http://sourceforge.net/projects/fcgene/&quot;&gt;fcGENE&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;./fcgene --ped example.ped --map example.map --oforamt snptest --out output&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;这样就得到了SNPTEST的输入文件：output.sample和output.gen。对照SNPTEST的输入文件要求，整理sample文件。输入文件可以是 .gen + .sample的形式，也可以是 .bed + .sample。（plink –file example –make-bed –out example，得到bed文件，注意保留fam文件和bim文件在同一路径下。）&lt;/p&gt;
+
+&lt;p&gt;2、frequentist association tests&lt;/p&gt;
+
+&lt;p&gt;SNPTEST的网页上给了详细的例子。比如这个：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./snptest 
+-data example.gen example.sample 
+-o ./example/ex.out
+-frequentist 1
+-method score
+-pheno bin1&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;-frequentist&lt;/code&gt;命令可以有参数 1 2 3 4 5（1=Additive, 2=Dominant, 3=Recessive, 4=General and 5=Heterozygote）五种models。
+&lt;code class=&quot;highlighter-rouge&quot;&gt;-method&lt;/code&gt;命令也有ml em score expected threshold五种参数。&lt;/p&gt;
+
+&lt;p&gt;3、shell脚本执行重复操作&lt;/p&gt;
+
+&lt;p&gt;如果想把上述例子中的每一种参数的计算都执行一遍，那么就需要敲5*5=25次命令行？&lt;/p&gt;
+
+&lt;p&gt;不需要这样。这里写一个简单的shell脚本，利用这个脚本一次性执行多条命令，节省人力。新建文本，命名为snptest_test.sh。文本内容如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#! /bin/bash&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;k &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;((&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1;k&amp;lt;6;k++&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;do
+        for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;ml em score expected threshold
+            &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; 
+                ./snptest -data example.gen example.sample -o ./output/frequentist_model_&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;_method_&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;.out -frequentis &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -method &lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; -pheno bin1
+            &lt;span class=&quot;k&quot;&gt;done
+    done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;进入linux的终端。并进入输入文件所在目录。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir output  &lt;span class=&quot;c&quot;&gt;# 新建output文件夹，snptest_test.sh脚本将计算结果都放在这个文件夹中&lt;/span&gt;
+chmod +x snptest_test.sh
+./snptest.sh&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;好了，正常情况下终端就开始刷屏计算了。&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 12 Aug 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/08/12/SNPTEST.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/08/12/SNPTEST.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>以R作GWAS的manhattan图</title>
+        <description>&lt;p&gt;来自gettinggeneticsdone（blogspot）上的一段ManhattanPlot的R代码，稍加修改了一下以方便自己的使用。blogspot被墙了，所以没去找原作者的Rscript地址。&amp;lt;/br&amp;gt;
+我弄得修改版在这里。
+&lt;code class=&quot;highlighter-rouge&quot;&gt;https://github.com/geneticswithme/hello_genetics/blob/master/manhattan_z.R&lt;/code&gt;
+加载上manhattan这个函数后，就可以直接使用这个函数对PLINK关联分析结果文件作manhattan图。
+这里我随机生成一个assoc数据框，以解释manhattan这个函数的使用。&amp;lt;/br&amp;gt;
+manhattan这个函数的输入必须为dataframe，且包含“CHR”，“SNP”，“BP”和“P”这四个header。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;n&quot;&gt;setwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;G:/manhattan/test/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;manhattan_z.R&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#生成测试用的dataframe
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set.seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CHR&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+				&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SNP&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;paste&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SNP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+				&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;BP&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+				&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;P&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runif&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;png&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;manhattan.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;par&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mfcol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;   &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig1
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;red&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;green&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ymax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig2
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ymax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suggestiveline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;genomewideline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig3&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig3
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ymax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suggestiveline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;genomewideline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig4&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig4
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dev.off&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;#哈哈~~没有显著位点（演示数据而已~）
+&lt;img src=&quot;/images/manhattan.png&quot; alt=&quot;pic&quot; /&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Mon, 25 May 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/05/25/manhattanPlot.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/25/manhattanPlot.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>Affy SNP芯片CEL文件转化为Plink格式（AffyPipe）</title>
+        <description>&lt;p&gt;利用AffyPipe工具整理Affy的SNP芯片原始数据为PLINK格式。&lt;/p&gt;
+
+&lt;p&gt;Affymetrix SNP芯片的原始文件为CEL文件，一个CEL文件即是一个个体的全部SNP分型结果。&lt;/p&gt;
+
+&lt;p&gt;分析平台：Ubuntu 12.04 LTS 64位系统&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;准备工作：&amp;lt;/br&amp;gt;
+1、在ubuntu上安装git，并从github上获取AffyPipe软件包&amp;lt;/br&amp;gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl+Alt+t&lt;/code&gt;打开终端，打开终端时，默认处在家目录下，&lt;code class=&quot;highlighter-rouge&quot;&gt;pwd&lt;/code&gt;命令可以查看当前路径。在终端输入&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo apt-get install git-core&lt;/code&gt;，等待安装完成后，输入&lt;code class=&quot;highlighter-rouge&quot;&gt;git&lt;/code&gt;后回车，出现如下画面说明git安装成功。
+&lt;img src=&quot;/assets/images/20150513-git.png&quot; alt=&quot;git&quot; /&gt;
+安装成功后，便可以用git从github上抓取AffyPipe软件包了。输入
+&lt;code class=&quot;highlighter-rouge&quot;&gt;git clone https://github.com/nicolazzie/AffyPipe&lt;/code&gt;即在当前路径下新建了一个叫”AffyPipe”的文件夹，文件夹中情况
+&lt;img src=&quot;/assets/images/20150513-AffyPipe1.png&quot; alt=&quot;git&quot; /&gt;
+如果不想安装git，可以直接从”https://github.com/nicolazzie/AffyPipe”下载AffyPipe的zip包，解压后是一样的。&lt;/p&gt;
+
+&lt;p&gt;2、仔细阅读README.md文档，然后下面都可以不看了。&lt;/p&gt;
+
+&lt;p&gt;3、注册Affy官网账号并登陆&lt;code class=&quot;highlighter-rouge&quot;&gt;http://affymetrix.com&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;4、从Affymetrix官网下载所需文件。&amp;lt;/br&amp;gt;
+4.1 Affy chicken芯片的解析文件。”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt; Library Files”中下载”Axiom Genome Wide Chicken Analysis Files”(约59MB)，下载下来的文件其实是&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken_Analysis.r1.zip&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;4.2 Affy chicken芯片的位点注释文件。”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt;Current NetAffx Annotation Files”，下载CSV格式的注释文件（44MB），实际文件名为&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv.zip&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;4.3 DevNet Tools。”Partners &amp;amp; Programs &amp;gt; Developers’ Network &amp;gt; DevNet Tools&lt;code class=&quot;highlighter-rouge&quot;&gt;下载&lt;/code&gt;APT-tools”（目前是apt-1.17.0-x86_64-intel-linux.zip）和&lt;code class=&quot;highlighter-rouge&quot;&gt;SNPolisher&lt;/code&gt;。
+    (&lt;a href=&quot;www.affymetrix.com/estore/partners_programs/programs/developer/tools/devnettools.affx&quot;&gt;Affymetrix DevNet Tools&lt;/a&gt;)&lt;/p&gt;
+
+&lt;p&gt;5、改造”AFFYTOOLS”文件夹内容。该目录&lt;code class=&quot;highlighter-rouge&quot;&gt;~/AffyPipe/AFFYTOOLS/&lt;/code&gt;下只保留&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-1.15.2-x86_64-intel-linux&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;SNPolisher_package&lt;/code&gt;两个子文件夹，其它的统统删掉。&amp;lt;/br&amp;gt;
+5.1 解压4.1中下载的&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken_Analysis.r1.zip&lt;/code&gt;和4.2中下载的&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv.zip&lt;/code&gt;，将全部文件放入”~/AffyPipe/AFFYTOOLS/”路径下。&amp;lt;/br&amp;gt;
+5.2 解压4.3中下载的&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-1.17.0-x86_64-intel-linux.zip&lt;/code&gt;，将全部文件放入”~/AffyPipe/AFFYTOOLS/apt-1.15.2-x86_64-intel-linux”路径下。&lt;/p&gt;
+
+&lt;p&gt;6、在R中安装&lt;code class=&quot;highlighter-rouge&quot;&gt;SNPolisher&lt;/code&gt;。打开R，运行&lt;code class=&quot;highlighter-rouge&quot;&gt;install.packages(&#39;[your path to file: SNPolisher[[version]].tar.gz]&#39;,repos=NULL,type=&#39;source&#39;)&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;7、将自己的CEL文件（有可能是CEL.zip的压缩文件，需解压），全部放入”~/AffyPipe”路径下。&lt;/p&gt;
+
+&lt;p&gt;8、打开终端&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/AffyPipe
+chmod +x createcelfile.sh
+createcelfile.sh &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.CEL&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;~/AffyPipe&lt;/code&gt;路径下生成&lt;code class=&quot;highlighter-rouge&quot;&gt;mycellistfile.txt&lt;/code&gt;文件。&lt;/p&gt;
+
+&lt;p&gt;9、修改”~/AffyPipe” 路径下的 “PARM_species.inp” 文件内容。&lt;code class=&quot;highlighter-rouge&quot;&gt;SPEC_prefix = Axiom_GW_GT_Chiken&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;SPEC_version = r1&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;SPEC_annotation = Axiom_GW_GT_Chicken.na35.annot.csv&lt;/code&gt;。
+现在文件夹AffyPipe中结构是这样：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;AffyPipe- - AFFYTOOLS
+		|
+		- -	Affypipe.py
+		|
+		- - creatcelfile.sh
+		|
+		- - &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.CEL&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;10、运行AffyPipe.py程序。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/AffyPipe
+python AffyPipe.py mycellistfile.txt --plinkACGT&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;这一步将CEL中的基因型数据整理出来并按照AffyPipe默认的条件质控后，输出plink的数据格式文件&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_genotypes_PLINKfmt.ped/map&lt;/code&gt;。如果需要修改质控条件，参考&lt;code class=&quot;highlighter-rouge&quot;&gt;python AffyPipe.py -h&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;11、运行PLINK，将”ped/map”文件转化为”bed/bim/fam”文件格式，&lt;code class=&quot;highlighter-rouge&quot;&gt;plink --file Axiom_genotypes_PLINKfmt --make-bed&lt;/code&gt;，修改fam文件中的个体表型等信息。&lt;/p&gt;
+
+&lt;p&gt;到此就完成了Affy SNP芯片的原始数据转化成PLINK的格式的全部过程。&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 14 May 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/05/14/AffyPipe.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/14/AffyPipe.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>Population Structure MDS/PCA plot</title>
+        <description>&lt;p&gt;以ISGC上的&lt;code class=&quot;highlighter-rouge&quot;&gt;SNP50_Breedv2&lt;/code&gt;数据为示例数据，已经是PLINK的PED和MAP格式数据。数据和R codes获得方式：&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#git shell 下使用如下命令直接在本地建立demo_genetics文件夹或者从相应的地址下载数据&lt;/span&gt;
+git clone https://github.com/geneticswithme/demo_genetics.git&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PLINK_v1.07&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;--mds-plot&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;PLINK_v1.09&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;--pca&lt;/code&gt;二选一。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#PLINK_v1.07&lt;/span&gt;
+plink --sheep --file SNP50_Breedv2 --cluster --mds-plot 10 
+&lt;span class=&quot;c&quot;&gt;#生成plink.mds文件是作图文件&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#PLINK_v1.09&lt;/span&gt;
+plink --sheep --file SNP50_Breedv2 --pca
+&lt;span class=&quot;c&quot;&gt;#生成plink.eigenval 和plink.eigenvec文件，eigenvec文件是作图文件&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;用R作图&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#首先进入本地的demo_genetics目录下，&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#setwd(&quot;#path_to_demo_genetics&quot;)&lt;/span&gt;
+setwd&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;G:/mywork/demo_genetics&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+list.files&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#查看该目录下的文件，至少要有plink.mds和plink.eigenvec文件&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#对plink.mds 文件作图&lt;/span&gt;
+mds &amp;lt;- read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mds.plink&quot;&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;T&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+head&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#查看数据前几行&lt;/span&gt;
+attach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 以列名作为变量名将每列数据载入R内存中。&lt;/span&gt;
+table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#查看家系及数目，这里的家系即是各个品种&lt;/span&gt;
+plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C1, C2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#以第一mds和第二mds分别为x y坐标做散点图&lt;/span&gt;
+legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#标注上图例&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#以pdf格式保存作图结果&lt;/span&gt;
+pdf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.pdf&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C1, C2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
+legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#以png格式保存作图结果&lt;/span&gt;
+png&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.png&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C1, C2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
+legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+detach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#卸载R中mds数据框的列变量名&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;#对plink.eigenvec文件作图，基本上与上面相同，只需注意文件格式&lt;/span&gt;
+pca&amp;lt;- read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mds.eigenvec&quot;&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+colnames&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;lt;-c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;PopName&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Id&quot;&lt;/span&gt;,paste&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;PCA&quot;&lt;/span&gt;,1:20,sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+head&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+attach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PCA1, PCA2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#以第一mds和第二mds分别为x y坐标做散点图&lt;/span&gt;
+legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;topright&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#标注上图例&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#以pdf格式保存作图结果&lt;/span&gt;
+pdf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.pdf&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PCA1, PCA2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
+legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;topright&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#以png格式保存作图结果&lt;/span&gt;
+png&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.png&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PCA1, PCA2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
+legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;topright&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
+dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+detach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;结果如下所示：
+&lt;img src=&quot;/images/20150513-mds_pca_plot.png&quot; alt=&quot;mds_pca_plot&quot; /&gt;
+MDS和PCA方法分析群体结构是一样的效果，个体之间都按照所属群体聚成几大类。&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 13 May 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/05/13/MDS_PCA_plot.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/13/MDS_PCA_plot.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>PCA方法分析群体遗传结构</title>
+        <description>&lt;p&gt;侃一下PCA。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;数学原理什么的不详述。CodingLabs的这篇博文讲得很容易理解&lt;a href=&quot;http://blog.codinglabs.org/articles/pca-tutorial.html&quot;&gt;《PCA的数学原理》&lt;/a&gt;。 &amp;lt;/br&amp;gt;
+关于PCA，我们不需要研究它的具体数学原理，只需要记住几个关键词就可以了。“无参数”，“特征向量”，“降维”。&amp;lt;/br&amp;gt;
+简而言之，PCA把原始的多维数据变换到新构建的坐标系中，数据变换的第一大方差在第一坐标（即第一主成分上），第二大方差在第二坐标上，以此类推。PCA分析时，选取数据集的最大的几个主成分代表整个数据集的情况，这种降维思想就是为了保留数据集中最重要的部分，忽略一些不重要的部分，从而减轻数据处理的工作量。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;MDS(Multidimensional scaling)，多维标度，也是多重变量的分析方法，和PCA有一定的相似性。&amp;lt;/br&amp;gt;
+MDS分解距离矩阵，PCA使用相关性或者说是协方差矩阵。
+当MDS分析时，采用欧几里得距离，MDS和PCA的结果是一致的。
+plink1.07提供的mds方法是&lt;code class=&quot;highlighter-rouge&quot;&gt;--cluster --mds-plot 10&lt;/code&gt;，先利用&lt;code class=&quot;highlighter-rouge&quot;&gt;--cluster&lt;/code&gt;计算出了距离矩阵ibs(identity by state)，然后对这个距离矩阵进行分解，指定分解的维度为10而计算mds。plink1.09提供的&lt;code class=&quot;highlighter-rouge&quot;&gt;--pca&lt;/code&gt;直接是采用了smartpca的计算方法求解pca。&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 06 May 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/05/06/PCA.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/06/PCA.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>利用PLINK进行GWAS分析（五）</title>
+        <description>&lt;p&gt;这一篇正式介绍全基因组关联分析的PLINK的commands。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;#case-control 试验设计
+对绵羊的有角和无角这一对性状进行研究。假定有角为case性状，则无角为control性状。
+在一个绵羊群体中，存在一部分个体为有角表型，另一部分个体为无角表型。现在对这一群绵羊共m只进行全基因组的SNP检测，得到全基因组的SNP数据。&amp;lt;/br&amp;gt;
+整理绵羊的SNP数据与个体表型记录数据为PLINK的输入文件格式，如&lt;code class=&quot;highlighter-rouge&quot;&gt;sheep.ped&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;sheep.fam&lt;/code&gt;文件。&amp;lt;/br&amp;gt;
+1、最简单的关联分析&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#对数据进行质控，得到质控后的数据sheep_qc。改写为二进制格式为了提高读取速度。&lt;/span&gt;
+plink --file sheep --maf 0.01 --geno 0.1 --mind 0.1 --hwe 1e-5 --make-bed --out sheep_qc
+&lt;span class=&quot;c&quot;&gt;#关联分析过程用最简单的assoc。输出result1.assoc文件。&lt;/span&gt;
+plink --bfile sheep_qc --assoc --out result1&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;result1.assoc文件可以用文本打开，每一行是一个位点的信息，每一列的信息如下。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;column1: CHR, chromosome
+column2: SNP, SNP ID
+column3: BP, Physical position &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base-pair&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+column4: A1, Minor allele name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;based on whole sample&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+column5: F_A, Frequency of this allele &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;cases
+column6: F_U, Frequency of this allele &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;controls
+column7: A2, Major allele name
+column8: CHISQ, Basic allelic &lt;span class=&quot;nb&quot;&gt;test &lt;/span&gt;chi-square &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1df&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+column9: P, Asympototic p-value &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this &lt;span class=&quot;nb&quot;&gt;test
+&lt;/span&gt;column10: Estimated odds ratio &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;A1, i.e. A2 is reference&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;第八列是SNP位点的allelic test的卡方值，第9列是卡方检验的P值。一般关注第八列的数值，对其做log变换，绘图。选取P值大于基因组或染色体显著水平的SNP，这些SNPs即是与形状关联的SNP位点。&lt;/p&gt;
+
+&lt;p&gt;2、Fisher exact test&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --bfile sheep_qc --fisher --out result2&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;与上一个分析的差别仅在于对于统计量的检验换做了Fisher检验。&amp;lt;/br&amp;gt;
+result1.assoc文件可以用文本打开，每一行是一个位点的信息，每一列的信息如下。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;column1: CHR, chromosome
+column2: SNP, SNP ID
+column3: BP, Physical position &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;base-pair&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+column4: A1, Minor allele name &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;based on whole sample&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+column5: F_A, Frequency of this allele &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;cases
+column6: F_U, Frequency of this allele &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;controls
+column7: A2, Major allele name
+column8: P, Exact p-value &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this &lt;span class=&quot;nb&quot;&gt;test
+&lt;/span&gt;column9: Estimated odds ratio &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;A1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;第八列为fisher test的检验P值。同样是选取P值大于基因组或染色体显著水平的SNP，作为关联分析得到的显著位点。&lt;/p&gt;
+
+&lt;p&gt;3、model test&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;包括：Cochran-Armitage trend test(1df)、 Genotypic test(2df)、 Dominant gene action test(1df)、 Recessive gene action test(1df)。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --file sheep_qc --model --out result3
+&lt;span class=&quot;c&quot;&gt;#输出result3.model文件&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#也可以用fisher test的全模型检验&lt;/span&gt;
+plink --file sheep_qc --model --fisher&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;每列信息如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;column1: CHR, chromosome
+column2: SNP, SNP ID
+column3: TEST, &lt;span class=&quot;nb&quot;&gt;type &lt;/span&gt;of &lt;span class=&quot;nb&quot;&gt;test
+&lt;/span&gt;column4: AFF, Genotypes/alleles &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;cases
+column5: UNAFF, Genotypes/alleles &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;controls
+column6: CHISQ, Chi-squated statistic
+column7: DF, Degrees of freedom &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;test
+&lt;/span&gt;column8: P, Asymptotic p-value &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;this &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;4、logistic models&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --file sheep_qc --logistic&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;5、Covariate adjust&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#先生成MDS文件，plink.mds&lt;/span&gt;
+plink --file sheep_qc --cluster --mds-plot 10
+&lt;span class=&quot;c&quot;&gt;#应用logistic回归，加上MDS的C1和C2组分&lt;/span&gt;
+plink --file sheep_qc --logistic --covar plink.mds --covar-name C1-C2 --out result4&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;6、计算Inflation λ
+引入&lt;code class=&quot;highlighter-rouge&quot;&gt;--adjust&lt;/code&gt;命令时，log文件中会给出λ值。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --file sheep_qc --assoc --adjust
+&lt;span class=&quot;c&quot;&gt;#log文件中：&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Genomic inflation factor (based on median chi-squared) is ***&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#Mean chi-squared statistic is ***&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt; λ=1比较合适，如果λ＞1，需要慎重考虑一下群体结构的问题，而不仅仅是对全体P值除以λ。
+#case-control设计的GWAS小结
+不考虑群体结构问题，一般上述1、2、3、4命令选一执行。&amp;lt;/br&amp;gt;
+考虑群体结果，执行&lt;code class=&quot;highlighter-rouge&quot;&gt;--cluster --mds-plot 10&lt;/code&gt;得到群体结构的mds文件，按5命令执行。&amp;lt;/br&amp;gt;
+另外，对λ偏大的情况，需要慎重考虑一下群体结构问题对关联分析结果的假阳性和假阴性的影响。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;GWAS中群体结构问题比较复杂，以后另写文章详述。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 10 Apr 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/04/10/GWAS5.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/04/10/GWAS5.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
+        <title>利用PLINK进行GWAS分析（四）</title>
+        <description>&lt;p&gt;IBS clustering 和 MDS&lt;/p&gt;
+
+&lt;p&gt;#IBS和IBD
+IBS, Identity by State&amp;lt;/br&amp;gt;
+IBD, Identity by Descent&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Identity_by_descent&quot;&gt;Wikipedia对IBD，IBS的解释&lt;/a&gt;&amp;lt;/br&amp;gt;
+A DNA segment is identical by state (IBS) in two or more individuals if they have identical nucleotide sequences in this segment. An IBS segemet is identical by descent (IBD) in two or more individuals if they have inherited it from a common ancestor without recombination, that is, the segment has the same ancestral origin in these individuals. DNA segments that are IBD are IBS per definition, but segments that are not IBD can still be IBS due to the same mutations in different individuals or recombinations that do not alter the segment.&amp;lt;/br&amp;gt;
+&lt;img src=&quot;/images/20150407-ibd.png&quot; alt=&quot;ibd&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;简单来说，两个个体都含有相同基因序列的DNA片段，这一DNA片段肯定是IBS，如果这一DNA片段是遗传自同一个共同祖先，那么这一DNA片段也是IBD。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;比较两个个体之间的SNP的Identity by State，分为三个状态：&amp;lt;/br&amp;gt;
+1、Identical，完全一致。如果在两个个体中都是相同基因型，AA &amp;amp; AA，AB &amp;amp; AB或者BB &amp;amp; BB。&amp;lt;/br&amp;gt;
+2、One-Allele Shared，含有一个共同位点。比如两个个体基因型为AA &amp;amp; AB或者BB &amp;amp; AB。&amp;lt;/br&amp;gt;
+3、No alleles shared，没有共同位点。比如，AA &amp;amp; BB。&amp;lt;/br&amp;gt;
+因而根据IBS对个体的基因型编码，这三种IBS状态可以相应地编码为2，1，0。即含有两个相同位点，含有一个相同位点，没有相同位点。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;简单理解，基因组上含有相同DNA片段越多的两个个体间的亲缘关系越近。&amp;lt;/br&amp;gt;
+IBD和IBS都可以用来推断个体之间的遗传亲缘关系。
+参考文献：Stevens et al. 2011. &lt;a href=&quot;http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1002287&quot;&gt;Inference of Relationships in Population Data Using Identity-by-Descent and Identity-by-State&lt;/a&gt;.PLoS Genet 7(9):e1002287&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;需要有家系等额外的信息才能够判断IBD。因而对于一般的随机抽样群体，没有系谱记录的话，用IBS判断亲缘关系远近。&amp;lt;/br&amp;gt;&lt;/p&gt;
+
+&lt;p&gt;PLINK计算群体中两两个体之间的IBS，构成的是IBS得矩阵形式。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --file &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --cluster --matrix 
+&lt;span class=&quot;c&quot;&gt;#生成plink.mibs,是两两个体间的IBS矩阵。数值在0~1之间，数值越小代表个体间相似度越低，亲缘关系越远&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;#Multidimensional scaling plots（MDS）
+实际上是多维变量分解IBS矩阵。这里的MDS和PCA是一样的。关于MDS和PCA的原理和细节下次再叙述，这里主要说明如何生成MDS结果。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --file &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --cluster --mds-plot 10 
+&lt;span class=&quot;c&quot;&gt;#生成plink.mds，这一文件从第四列开始，分别为第一、第二……的dimension。&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;plink.mds文件中每一行是一个个体的数据。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;column1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FamilyID
+column2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; IndividualID
+column3 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; SOL, Assighed solution code
+column4 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C1, Position on first dimension
+column5 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C2, Position on second dimension
+column6 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C3, Position on third dimension
+column7 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C4, Position on fourth dimension
+…………&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;根据第一和第二维度（第四列和第五列）的数据，绘制scatter plot，可以看到不同个体的在这两个维度上的坐标。&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read.table&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;plink.mds&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as.factor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xlab&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;C1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ylab&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;C2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pch&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;MDS plot&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bty&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as.factor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
+&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#加上图注，并以第一列的&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FamilyID&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;对个体标记不同的颜色。&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</description>
+        <pubDate>Tue, 07 Apr 2015 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2015/04/07/GWAS4mds.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2015/04/07/GWAS4mds.html</guid>
         
         
         <category>notes</category>

@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>geneticswithme</title>
-  <meta name="description" content="Yuanyuan Zhang, a ph.D student working on Animal Genetics.
-">
+  <title>和PLINK一样简单好用的SNPTEST</title>
+  <meta name="description" content="SNPTEST也是一款优秀的GWAS分析的软件。官方说明页面在这里">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://zhangyy.site/">
+  <link rel="canonical" href="http://zhangyy.site/notes/2015/08/12/SNPTEST.html">
   <link rel="alternate" type="application/rss+xml" title="geneticswithme" href="http://zhangyy.site/feed.xml">
   <script type="text/javascript" src="/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
@@ -58,121 +57,68 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">和PLINK一样简单好用的SNPTEST</h1>
+    <p class="post-meta"><time datetime="2015-08-12T00:00:00-04:00" itemprop="datePublished">Aug 12, 2015</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Jul 12, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>SNPTEST也是一款优秀的GWAS分析的软件。官方说明页面<a href="https://mathgen.stats.ox.ac.uk/genetics_software/snptest/snptest.html">在这里</a>
+<img src="/assets/images/20150812-1.png" alt="pic" /></p>
 
-        <h2>
-          <a class="post-link" href="/notes/2016/07/12/geneticsDist.html">Reynolds distance</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
+<p>linux下操作。</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2016/03/05/ldDecay.html">计算LD decay(LD衰减)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 29, 2015</span>
+<p>1、准备输入文件</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/11/29/AffyLRR_BAF.html">从Affy Axiom的CEL文件导出LRR和BAF</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 12, 2015</span>
+<p>还是从PLINK的PED和MAP文件开始。再安利一款格式转化小工具 <a href="http://sourceforge.net/projects/fcgene/">fcGENE</a>。</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/08/12/SNPTEST.html">和PLINK一样简单好用的SNPTEST</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 25, 2015</span>
+<p><code class="highlighter-rouge">./fcgene --ped example.ped --map example.map --oforamt snptest --out output</code></p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/25/manhattanPlot.html">以R作GWAS的manhattan图</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 14, 2015</span>
+<p>这样就得到了SNPTEST的输入文件：output.sample和output.gen。对照SNPTEST的输入文件要求，整理sample文件。输入文件可以是 .gen + .sample的形式，也可以是 .bed + .sample。（plink –file example –make-bed –out example，得到bed文件，注意保留fam文件和bim文件在同一路径下。）</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/14/AffyPipe.html">Affy SNP芯片CEL文件转化为Plink格式（AffyPipe）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 13, 2015</span>
+<p>2、frequentist association tests</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/13/MDS_PCA_plot.html">Population Structure MDS/PCA plot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 6, 2015</span>
+<p>SNPTEST的网页上给了详细的例子。比如这个：</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/06/PCA.html">PCA方法分析群体遗传结构</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 10, 2015</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">./snptest 
+-data example.gen example.sample 
+-o ./example/ex.out
+-frequentist 1
+-method score
+-pheno bin1</code></pre></figure>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/04/10/GWAS5.html">利用PLINK进行GWAS分析（五）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 7, 2015</span>
+<p><code class="highlighter-rouge">-frequentist</code>命令可以有参数 1 2 3 4 5（1=Additive, 2=Dominant, 3=Recessive, 4=General and 5=Heterozygote）五种models。
+<code class="highlighter-rouge">-method</code>命令也有ml em score expected threshold五种参数。</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/04/07/GWAS4mds.html">利用PLINK进行GWAS分析（四）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2015</span>
+<p>3、shell脚本执行重复操作</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/04/05/GWAS3qc.html">利用PLINK进行GWAS分析（三）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 4, 2015</span>
+<p>如果想把上述例子中的每一种参数的计算都执行一遍，那么就需要敲5*5=25次命令行？</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/04/04/GWAS2file.html">利用PLINK进行GWAS分析（二）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 3, 2015</span>
+<p>不需要这样。这里写一个简单的shell脚本，利用这个脚本一次性执行多条命令，节省人力。新建文本，命名为snptest_test.sh。文本内容如下：</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/04/03/GWAS1.html">利用PLINK进行GWAS分析（一）</a>
-        </h2>
-      </li>
-    
-  </ul>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#! /bin/bash</span>
+<span class="k">for </span>k <span class="k">in</span> <span class="o">((</span><span class="nv">k</span><span class="o">=</span>1;k&lt;6;k++<span class="o">))</span>
+    <span class="k">do
+        for </span>i <span class="k">in </span>ml em score expected threshold
+            <span class="k">do</span> 
+                ./snptest -data example.gen example.sample -o ./output/frequentist_model_<span class="k">${</span><span class="nv">k</span><span class="k">}</span>_method_<span class="k">${</span><span class="nv">i</span><span class="k">}</span>.out -frequentis <span class="k">${</span><span class="nv">k</span><span class="k">}</span> -method <span class="k">${</span><span class="nv">i</span><span class="k">}</span> -pheno bin1
+            <span class="k">done
+    done</span></code></pre></figure>
 
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
+<p>进入linux的终端。并进入输入文件所在目录。</p>
 
-</div>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir output  <span class="c"># 新建output文件夹，snptest_test.sh脚本将计算结果都放在这个文件夹中</span>
+chmod +x snptest_test.sh
+./snptest.sh</code></pre></figure>
+
+<p>好了，正常情况下终端就开始刷屏计算了。</p>
+
+
+  </div>
+
+</article>
 
       </div>
     </div>

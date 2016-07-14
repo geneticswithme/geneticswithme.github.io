@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>geneticswithme</title>
-  <meta name="description" content="Yuanyuan Zhang, a ph.D student working on Animal Genetics.
-">
+  <title>利用PLINK进行GWAS分析（三）</title>
+  <meta name="description" content="数据清洗/质量控制&lt;/br&gt;质控这一步剔除低质量的SNP和样本，一般对以下两个方面进行质控：&lt;/br&gt;（1）样本质控：剔除SNP检出率过低的样本，一般剔除分型率低于90%的样本，--mind 0.1&lt;/br&gt;（2）SNP质控：剔除检出率过低的SNP，一般剔除SNP call r...">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://zhangyy.site/">
+  <link rel="canonical" href="http://zhangyy.site/notes/2015/04/05/GWAS3qc.html">
   <link rel="alternate" type="application/rss+xml" title="geneticswithme" href="http://zhangyy.site/feed.xml">
   <script type="text/javascript" src="/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
@@ -58,121 +57,37 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">利用PLINK进行GWAS分析（三）</h1>
+    <p class="post-meta"><time datetime="2015-04-05T00:00:00-04:00" itemprop="datePublished">Apr 5, 2015</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Jul 12, 2016</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>数据清洗/质量控制&lt;/br&gt;
+质控这一步剔除低质量的SNP和样本，一般对以下两个方面进行质控：&lt;/br&gt;
+（1）样本质控：剔除SNP检出率过低的样本，一般剔除分型率低于90%的样本，<code class="highlighter-rouge">--mind 0.1</code>&lt;/br&gt;
+（2）SNP质控：剔除检出率过低的SNP，一般剔除SNP call rate低于90%的SNP，<code class="highlighter-rouge">--geno 0.1</code>；剔除最小等位基因频率MAF低于0.05的SNP，<code class="highlighter-rouge">--maf 0.05</code>；剔除严重偏离哈代温伯格平衡的SNP，<code class="highlighter-rouge">--hwe 1e-5</code></p>
 
-        <h2>
-          <a class="post-link" href="/notes/2016/07/12/geneticsDist.html">Reynolds distance</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
+<p>quality filters:&lt;/br&gt;
+SNP call rate &lt; 90%&lt;/br&gt;
+Individual call rate &lt; 90%&lt;/br&gt;
+HWE pvalue &lt; 1e-5&lt;/br&gt;
+MAF &lt; 0.01<br /></p>
 
-        <h2>
-          <a class="post-link" href="/notes/2016/03/05/ldDecay.html">计算LD decay(LD衰减)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 29, 2015</span>
+<p>根据上述条件，利用PLINK进行质控：</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/11/29/AffyLRR_BAF.html">从Affy Axiom的CEL文件导出LRR和BAF</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 12, 2015</span>
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#在windows下打开cmd，输入</span>
+plink --file <span class="nb">test</span> --maf 0.01 --mind 0.1 --geno 0.1 --hwe 1e-5  --make-bed --out test_qc
+<span class="c">#质控后的数据，改写成二进制格式，命名为test_qc。</span></code></pre></figure>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/08/12/SNPTEST.html">和PLINK一样简单好用的SNPTEST</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 25, 2015</span>
+<p>得到文件<code class="highlighter-rouge">test_qc.bed</code>，<code class="highlighter-rouge">test_qc.bim</code>和<code class="highlighter-rouge">test_qc.fam</code>，留下作为后续分析的输入文件。</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/25/manhattanPlot.html">以R作GWAS的manhattan图</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 14, 2015</span>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/14/AffyPipe.html">Affy SNP芯片CEL文件转化为Plink格式（AffyPipe）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 13, 2015</span>
+  </div>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/13/MDS_PCA_plot.html">Population Structure MDS/PCA plot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 6, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/06/PCA.html">PCA方法分析群体遗传结构</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 10, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/10/GWAS5.html">利用PLINK进行GWAS分析（五）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 7, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/07/GWAS4mds.html">利用PLINK进行GWAS分析（四）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/05/GWAS3qc.html">利用PLINK进行GWAS分析（三）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 4, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/04/GWAS2file.html">利用PLINK进行GWAS分析（二）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 3, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/03/GWAS1.html">利用PLINK进行GWAS分析（一）</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
-</div>
+</article>
 
       </div>
     </div>

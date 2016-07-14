@@ -4,6 +4,9 @@
   {% include head.html %}
 
   <body>
+    {% if page.use_math %}
+      {% include mathjax_support %}
+    {% endif %}
 
     {% include header.html %}
 
