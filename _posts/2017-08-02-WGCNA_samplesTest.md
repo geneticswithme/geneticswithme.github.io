@@ -75,17 +75,17 @@ dev.off()
 
 5次随机抽取三个样本得到的softpower结果如下。
 
-![test1][/images/try1_sft.pdf]
+![test1](/images/try1_sft.pdf)
+![mds_pca_plot](/images/20150513-mds_pca_plot.png)
 
-![test2][/images/try2_sft.pdf]
+![test2](/images/try2_sft.pdf)
 
-![test3][/images/try3_sft.pdf]
+![test3](/images/try3_sft.pdf)
 
-![test4][/images/try4_sft.pdf]
+![test4](/images/try4_sft.pdf)
 
-![test5][/images/try5_sft.pdf]
-<a href="/images/try5_sft.pdf"></a>
-![test][/images/2016-03-04figure1_LD.png]
+![test5](/images/try5_sft.pdf)
+
 
 
 
