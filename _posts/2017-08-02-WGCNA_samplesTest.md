@@ -76,9 +76,13 @@ dev.off()
 5次随机抽取三个样本得到的softpower结果如下。
 
 ![test1][/images/try1_sft.pdf]
+
 ![test2][/images/try2_sft.pdf]
+
 ![test3][/images/try3_sft.pdf]
+
 ![test4][/images/try4_sft.pdf]
+
 ![test5][/images/try5_sft.pdf]
 
 
