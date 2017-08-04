@@ -84,5 +84,8 @@ dev.off()
 ![test4][/images/try4_sft.pdf]
 
 ![test5][/images/try5_sft.pdf]
+<a href="/images/try5_sft.pdf"></a>
+![test][/images/2016-03-04figure1_LD.png]
+
 
 
