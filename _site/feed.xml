@@ -2,13 +2,29 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>geneticswithme</title>
-    <description>Yuanyuan Zhang, a ph.D student working on Animal Genetics.
+    <description>Yuanyuan Zhang, a ph.D student struggling on Animal Genetics.
 </description>
     <link>http://zhangyy.site/</link>
     <atom:link href="http://zhangyy.site/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Thu, 14 Jul 2016 10:11:03 -0400</pubDate>
-    <lastBuildDate>Thu, 14 Jul 2016 10:11:03 -0400</lastBuildDate>
+    <pubDate>Fri, 04 Aug 2017 14:16:48 -0400</pubDate>
+    <lastBuildDate>Fri, 04 Aug 2017 14:16:48 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>Estimate recombinate rate using genome-wide SNPs</title>
+        <description>&lt;p&gt;Estimate recombination rate from LD and the known map length of the chromosomes, estimate Ne based on recombination rate.
+Tutorial &lt;a href=&quot;http://zhangyy.site/LD_Ne/&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ref:&lt;a href=&quot;http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1832099/&quot;&gt;Tenesa et. al(2007)&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Thu, 08 Sep 2016 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2016/09/08/LD_Ne.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2016/09/08/LD_Ne.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
     
       <item>
         <title>Reynolds distance</title>
@@ -78,7 +94,9 @@ plink1.07 虽然提供了&lt;code class=&quot;highlighter-rouge&quot;&gt;--r2&lt
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;java -jar Haploview.jar -nogui -pedfile example.ped -info example.info -dprime&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;生成的example.ped.ld文件中则包括了r2，这里的计算忽略了长度超过500kb的LD，如需修改可参考Haploview的帮助文档.&lt;/p&gt;
+&lt;p&gt;生成的example.ped.ld文件中则包括了r2，格式如下所示。
+&lt;img src=&quot;/images/LDfile_header.png&quot; alt=&quot;test_plot&quot; /&gt;
+这里的计算忽略了长度超过500kb的LD，如需修改可参考Haploview的帮助文档.&lt;/p&gt;
 
 &lt;p&gt;example.ped和example.info文件可以由plink软件转换，&lt;code class=&quot;highlighter-rouge&quot;&gt;plink --bfile example --recodeHV --out example&lt;/code&gt;，则生成ped和info格式。&lt;/p&gt;
 
@@ -104,6 +122,13 @@ plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;example_LDdecay[,2],example_LD
 dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/2016-03-04test.png&quot; alt=&quot;test_plot&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;至此，做出了单条染色体的LD衰减图。若要计算全基因组水平的LD decay，可以先分别计算每一条染色体上标记之间的LD水平，将全部染色体的数据合并为一个文件，再用滑窗方式计算所划分的区间内的平均LD值，再作图即可。&lt;/p&gt;
+
+&lt;p&gt;假设通过Haploview软件，分别得到每条常染色体上的LD结果，文件名为chr1.ped.ld，chr2.ped.ld，chr3.ped.ld，chr4.ped.ld，…
+合并所有的文件为同一个文件，chroms.ld，可以使用R中的rbind函数，或者利用shell，&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;awk 1 chr&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;ped.ld | sed &lt;span class=&quot;s1&quot;&gt;&#39;/T-int/d&#39;&lt;/span&gt; &amp;gt;chroms.ld&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 </description>
         <pubDate>Sat, 05 Mar 2016 00:00:00 -0500</pubDate>
@@ -607,74 +632,6 @@ plink --file sheep_qc --logistic --covar plink.mds --covar-name C1-C2 --out resu
         <pubDate>Fri, 10 Apr 2015 00:00:00 -0400</pubDate>
         <link>http://zhangyy.site/notes/2015/04/10/GWAS5.html</link>
         <guid isPermaLink="true">http://zhangyy.site/notes/2015/04/10/GWAS5.html</guid>
-        
-        
-        <category>notes</category>
-        
-      </item>
-    
-      <item>
-        <title>利用PLINK进行GWAS分析（四）</title>
-        <description>&lt;p&gt;IBS clustering 和 MDS&lt;/p&gt;
-
-&lt;p&gt;#IBS和IBD
-IBS, Identity by State&amp;lt;/br&amp;gt;
-IBD, Identity by Descent&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/Identity_by_descent&quot;&gt;Wikipedia对IBD，IBS的解释&lt;/a&gt;&amp;lt;/br&amp;gt;
-A DNA segment is identical by state (IBS) in two or more individuals if they have identical nucleotide sequences in this segment. An IBS segemet is identical by descent (IBD) in two or more individuals if they have inherited it from a common ancestor without recombination, that is, the segment has the same ancestral origin in these individuals. DNA segments that are IBD are IBS per definition, but segments that are not IBD can still be IBS due to the same mutations in different individuals or recombinations that do not alter the segment.&amp;lt;/br&amp;gt;
-&lt;img src=&quot;/images/20150407-ibd.png&quot; alt=&quot;ibd&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;简单来说，两个个体都含有相同基因序列的DNA片段，这一DNA片段肯定是IBS，如果这一DNA片段是遗传自同一个共同祖先，那么这一DNA片段也是IBD。&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;p&gt;比较两个个体之间的SNP的Identity by State，分为三个状态：&amp;lt;/br&amp;gt;
-1、Identical，完全一致。如果在两个个体中都是相同基因型，AA &amp;amp; AA，AB &amp;amp; AB或者BB &amp;amp; BB。&amp;lt;/br&amp;gt;
-2、One-Allele Shared，含有一个共同位点。比如两个个体基因型为AA &amp;amp; AB或者BB &amp;amp; AB。&amp;lt;/br&amp;gt;
-3、No alleles shared，没有共同位点。比如，AA &amp;amp; BB。&amp;lt;/br&amp;gt;
-因而根据IBS对个体的基因型编码，这三种IBS状态可以相应地编码为2，1，0。即含有两个相同位点，含有一个相同位点，没有相同位点。&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;p&gt;简单理解，基因组上含有相同DNA片段越多的两个个体间的亲缘关系越近。&amp;lt;/br&amp;gt;
-IBD和IBS都可以用来推断个体之间的遗传亲缘关系。
-参考文献：Stevens et al. 2011. &lt;a href=&quot;http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1002287&quot;&gt;Inference of Relationships in Population Data Using Identity-by-Descent and Identity-by-State&lt;/a&gt;.PLoS Genet 7(9):e1002287&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;p&gt;需要有家系等额外的信息才能够判断IBD。因而对于一般的随机抽样群体，没有系谱记录的话，用IBS判断亲缘关系远近。&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;p&gt;PLINK计算群体中两两个体之间的IBS，构成的是IBS得矩阵形式。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --file &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --cluster --matrix 
-&lt;span class=&quot;c&quot;&gt;#生成plink.mibs,是两两个体间的IBS矩阵。数值在0~1之间，数值越小代表个体间相似度越低，亲缘关系越远&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;#Multidimensional scaling plots（MDS）
-实际上是多维变量分解IBS矩阵。这里的MDS和PCA是一样的。关于MDS和PCA的原理和细节下次再叙述，这里主要说明如何生成MDS结果。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;plink --file &lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; --cluster --mds-plot 10 
-&lt;span class=&quot;c&quot;&gt;#生成plink.mds，这一文件从第四列开始，分别为第一、第二……的dimension。&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;plink.mds文件中每一行是一个个体的数据。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;column1 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; FamilyID
-column2 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; IndividualID
-column3 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; SOL, Assighed solution code
-column4 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C1, Position on first dimension
-column5 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C2, Position on second dimension
-column6 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C3, Position on third dimension
-column7 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; C4, Position on fourth dimension
-…………&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;根据第一和第二维度（第四列和第五列）的数据，绘制scatter plot，可以看到不同个体的在这两个维度上的坐标。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;read.table&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;plink.mds&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds2&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;plot&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mds2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as.factor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;xlab&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;C1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ylab&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;C2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pch&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;MDS plot&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bty&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;n&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0.8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unique&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;as.factor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; 
-&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;#加上图注，并以第一列的&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;FamilyID&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;对个体标记不同的颜色。&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-</description>
-        <pubDate>Tue, 07 Apr 2015 00:00:00 -0400</pubDate>
-        <link>http://zhangyy.site/notes/2015/04/07/GWAS4mds.html</link>
-        <guid isPermaLink="true">http://zhangyy.site/notes/2015/04/07/GWAS4mds.html</guid>
         
         
         <category>notes</category>

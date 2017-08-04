@@ -96,18 +96,21 @@
 
 <p>2、下载GenomeStudio软件</p>
 
-<p>GenomeStudio软件是用来读取Illumina 芯片原始数据，进行数据查看的，输出数据的软件。可以在Illumina官网下载安装。因为分析的是SNP芯片数据，所以只需注册GenomeStudio的Genotyping module即可。如果需要GenomeStudio 的Genotyping Module的注册码，可以联系我。</p>
+<p>GenomeStudio软件是用来读取Illumina 芯片原始数据，进行数据查看的，输出数据的软件。可以在Illumina官网下载安装。因为分析的是SNP芯片数据，所以只需注册GenomeStudio的Genotyping module即可。</p>
 
-<p>GenomeStudio的说明详见<a href="http://www.illumina.com.cn/informatics/sequencing-microarray-data-analysis/genomestudio.aspx">GenomeStudio</a>，Genotyping Module的<a href="http://support.illumina.com/content/dam/illumina-support/documents/myillumina/d2c2c169-36c7-4613-89d6-bf34588a7624/genomestudio_gt_module_v1.0_ug_11319113_reva.pdf">User Guide</a>。&lt;/br&gt;
+<p>GenomeStudio的说明详见<a href="http://www.illumina.com.cn/informatics/sequencing-microarray-data-analysis/genomestudio.aspx">GenomeStudio</a>，Genotyping Module的<a href="http://support.illumina.com/content/dam/illumina-support/documents/myillumina/d2c2c169-36c7-4613-89d6-bf34588a7624/genomestudio_gt_module_v1.0_ug_11319113_reva.pdf">User Guide</a>。
 在Genotyping Module上安装PLINK插件，可以由此将原始数据输出为PLINK的PED格式的SNP数据。</p>
 
 <p>3、利用GenomeStudio输出PED文件</p>
 
 <p>Analysis→Reports→Repost Wizard
-<img src="/images/GenomeStudio-screenshot2.png" alt="output-screenshot" />
-自定义输出格式，Custom Report→PLINK Input Report
-<img src="/images/GenomeStudio-screenshot3.png" alt="output-screenshot2" />
-按照提示操作输出PED文件。</p>
+<img src="/images/GenomeStudio-screenshot2.png" alt="output-screenshot" /></p>
+
+<p>自定义输出格式，Custom Report→PLINK Input Report</p>
+
+<p><img src="/images/GenomeStudio-screenshot3.png" alt="output-screenshot2" /></p>
+
+<p>按照提示操作输出PED文件。</p>
 
 <p>4、整理MAP文件和PED文件</p>
 
@@ -116,8 +119,9 @@
 
 <p>5、PLINK软件的下载与安装</p>
 
-<p>下载地址<a href="http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml">PLINK v1.07</a>，这里下载的是1.07版本，目前最新的PLINK版本为1.09。这两个版本之间做了很大的改变，1.09版本明显好用了很多。但读取数据和基本分析命令都是差不多的，这里仅以1.07版本举例说明。根据自己的操作系统下载相应版本的软件，Windows系统的，下载MS-DOS版本。&lt;/br&gt;
-下载好的PLINK软件包加压后得到的文件夹包括plink.exe和gPLINK.jar两个程序，gPLINK.jar是依赖Java的图形界面化程序，plink.exe是在dos下运行的命令行程序。两者本质一样，运行方式不同。个人觉得plink.exe更灵活好用一些。</p>
+<p>下载地址<a href="http://pngu.mgh.harvard.edu/~purcell/plink/download.shtml">PLINK v1.07</a>，这里下载的是1.07版本，目前最新的PLINK版本为1.09。这两个版本之间做了很大的改变，1.09版本明显好用了很多。但读取数据和基本分析命令都是差不多的，这里仅以1.07版本举例说明。根据自己的操作系统下载相应版本的软件，Windows系统的，下载MS-DOS版本。</p>
+
+<p>下载好的PLINK软件包加压后得到的文件夹包括plink.exe和gPLINK.jar两个程序，gPLINK.jar是依赖Java的图形界面化程序，plink.exe是在dos下运行的命令行程序。两者本质一样，运行方式不同。个人觉得plink.exe更灵活好用一些。</p>
 
 <p>6、运行plink.exe</p>
 
@@ -126,7 +130,7 @@
 
 <p>整理好得文件为<code class="highlighter-rouge">test.ped</code>和<code class="highlighter-rouge">test.map</code>文件。放入G盘下的test文件夹中，plink.exe程序同样放入该文件夹中。</p>
 
-<p>命令提示符后输入<code class="highlighter-rouge">G:</code>进入G盘目录下，输入<code class="highlighter-rouge">cd test</code>进入test目录，输入<code class="highlighter-rouge">dir</code>，查看当前目录的情况，可以看到有三个文件，分别是<code class="highlighter-rouge">test.ped</code>，<code class="highlighter-rouge">test.map</code>和<code class="highlighter-rouge">plink.exe</code>。&lt;/br&gt;
+<p>命令提示符后输入<code class="highlighter-rouge">G:</code>进入G盘目录下，输入<code class="highlighter-rouge">cd test</code>进入test目录，输入<code class="highlighter-rouge">dir</code>，查看当前目录的情况，可以看到有三个文件，分别是<code class="highlighter-rouge">test.ped</code>，<code class="highlighter-rouge">test.map</code>和<code class="highlighter-rouge">plink.exe</code>。
 这个时候直接输入<code class="highlighter-rouge">plink</code>，可以见到如下情况，提示没有输入文件。
 <img src="/assets/images/dos2.png" alt="dos2" />
 输入<code class="highlighter-rouge">plink --file test</code>，就可以看到plink读入的<code class="highlighter-rouge">test.ped</code>和<code class="highlighter-rouge">test.map</code>两个文件的结果。</p>
@@ -174,7 +178,7 @@
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>Yuanyuan Zhang, a ph.D student working on Animal Genetics.
+        <p>Yuanyuan Zhang, a ph.D student struggling on Animal Genetics.
 </p>
       </div>
     </div>

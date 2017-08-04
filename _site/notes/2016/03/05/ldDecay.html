@@ -84,7 +84,9 @@ plink1.07 虽然提供了<code class="highlighter-rouge">--r2</code>命令来计
 
 <p><code class="highlighter-rouge">java -jar Haploview.jar -nogui -pedfile example.ped -info example.info -dprime</code></p>
 
-<p>生成的example.ped.ld文件中则包括了r2，这里的计算忽略了长度超过500kb的LD，如需修改可参考Haploview的帮助文档.</p>
+<p>生成的example.ped.ld文件中则包括了r2，格式如下所示。
+<img src="/images/LDfile_header.png" alt="test_plot" />
+这里的计算忽略了长度超过500kb的LD，如需修改可参考Haploview的帮助文档.</p>
 
 <p>example.ped和example.info文件可以由plink软件转换，<code class="highlighter-rouge">plink --bfile example --recodeHV --out example</code>，则生成ped和info格式。</p>
 
@@ -110,6 +112,13 @@ plot<span class="o">(</span>example_LDdecay[,2],example_LDdecay[,1]<span class="
 dev.off<span class="o">()</span></code></pre></figure>
 
 <p><img src="/images/2016-03-04test.png" alt="test_plot" /></p>
+
+<p>至此，做出了单条染色体的LD衰减图。若要计算全基因组水平的LD decay，可以先分别计算每一条染色体上标记之间的LD水平，将全部染色体的数据合并为一个文件，再用滑窗方式计算所划分的区间内的平均LD值，再作图即可。</p>
+
+<p>假设通过Haploview软件，分别得到每条常染色体上的LD结果，文件名为chr1.ped.ld，chr2.ped.ld，chr3.ped.ld，chr4.ped.ld，…
+合并所有的文件为同一个文件，chroms.ld，可以使用R中的rbind函数，或者利用shell，</p>
+
+<figure class="highlight"><pre><code class="language-bash" data-lang="bash">awk 1 chr<span class="k">*</span>ped.ld | sed <span class="s1">'/T-int/d'</span> &gt;chroms.ld</code></pre></figure>
 
 
   </div>
@@ -154,7 +163,7 @@ dev.off<span class="o">()</span></code></pre></figure>
       </div>
 
       <div class="footer-col footer-col-3">
-        <p>Yuanyuan Zhang, a ph.D student working on Animal Genetics.
+        <p>Yuanyuan Zhang, a ph.D student struggling on Animal Genetics.
 </p>
       </div>
     </div>
