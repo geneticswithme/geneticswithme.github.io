@@ -72,18 +72,57 @@ dev.off()
 }
 
 ```
+使用全部样本（135个），得到的softpower结果如下，
+![test](/images/exampleData_sft.png)
 
-5次随机抽取三个样本得到的softpower结果如下。
+5次随机抽取3个样本，得到的softpower结果如下
 
-![test1](/images/try1_sft.pdf)
+![test1](/images/sample3_test1_sft.png)
 
-![test2](/images/try2_sft.pdf)
+![test2](/images/sample3_test2_sft.png)
 
-![test3](/images/try3_sft.pdf)
+![test3](/images/sample3_test3_sft.png)
 
-![test4](/images/try4_sft.pdf)
+![test4](/images/sample3_test4_sft.png)
 
-![test5](/images/try5_sft.pdf)
+![test5](/images/sample3_test5_sft.png)
+
+5次随机抽取6个样本，得到的softpower结果如下
+
+![test6](/images/sample6_test1_sft.png)
+
+![test7](/images/sample6_test2_sft.png)
+
+![test8](/images/sample6_test3_sft.png)
+
+![test9](/images/sample6_test4_sft.png)
+
+![test10](/images/sample6_test5_sft.png)
+
+5次随机抽取9个样本，得到的softpower结果如下
+![test11](/images/sample9_test1_sft.png)
+
+![test12](/images/sample9_test2_sft.png)
+
+![test13](/images/sample9_test3_sft.png)
+
+![test14](/images/sample9_test4_sft.png)
+
+![test15](/images/sample9_test5_sft.png)
+
+5次随机抽取12个样本，得到的softpower结果如下
+![test16](/images/sample9_test1_sft.png)
+
+![test17](/images/sample9_test2_sft.png)
+
+![test18](/images/sample9_test3_sft.png)
+
+![test19](/images/sample9_test4_sft.png)
+
+![test20](/images/sample9_test5_sft.png)
+
+可以看到，参与计算的样本数越多，得到的softpower结果越容易达到scale-free。
+
 
 
 
