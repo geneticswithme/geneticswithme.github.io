@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  WGCNA scale-free测试
-date:   2017-08-12
+date:   2017-08-02
 categories: notes
 ---
 
