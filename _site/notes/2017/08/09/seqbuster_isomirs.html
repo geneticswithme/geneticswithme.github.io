@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>geneticswithme</title>
-  <meta name="description" content="Yuanyuan Zhang, a ph.D student struggling on Animal Genetics.
-">
+  <title>seqbuster分析miRNA/isomirs基本流程</title>
+  <meta name="description" content="seqbuster">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://zhangyy.site/">
+  <link rel="canonical" href="http://zhangyy.site/notes/2017/08/09/seqbuster_isomirs.html">
   <link rel="alternate" type="application/rss+xml" title="geneticswithme" href="http://zhangyy.site/feed.xml">
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -61,153 +60,75 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">seqbuster分析miRNA/isomirs基本流程</h1>
+    <p class="post-meta"><time datetime="2017-08-09T00:00:00-04:00" itemprop="datePublished">Aug 9, 2017</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Aug 9, 2017</span>
+  <div class="post-content" itemprop="articleBody">
+    <p><a href="https://github.com/lpantano/seqbuster">seqbuster</a></p>
 
-        <h2>
-          <a class="post-link" href="/notes/2017/08/09/seqbuster_isomirs.html">seqbuster分析miRNA/isomirs基本流程</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 8, 2017</span>
+<p><a href="http://seqcluster.readthedocs.io/mirna_annotation.html#processing-of-reads">tutorial</a></p>
 
-        <h2>
-          <a class="post-link" href="/notes/2017/08/08/wgsim_kmers.html">利用模拟NGS数据研究kmers的分布</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 2, 2017</span>
+<h2 id="mirna-quality-control">1 miRNA quality control</h2>
 
-        <h2>
-          <a class="post-link" href="/notes/2017/08/02/WGCNA_samplesTest.html">WGCNA scale-free测试</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2016</span>
+<ul>
+  <li>
+    <p>先用fastQC查看数据情况</p>
+  </li>
+  <li>
+    <p>cutadpt 去除adapter序列，miRNA数据一般只需要去除3’ 的adapter。</p>
+  </li>
+</ul>
 
-        <h2>
-          <a class="post-link" href="/notes/2016/09/08/LD_Ne.html">Estimate recombinate rate using genome-wide SNPs</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jul 12, 2016</span>
+<h2 id="alignmentdatabasedb">2 准备本地alignment所需的database，放入文件夹“DB”内</h2>
 
-        <h2>
-          <a class="post-link" href="/notes/2016/07/12/geneticsDist.html">Reynolds distance</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
+<p>hairpin.fa and miRNA.str from miRBase site</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2016/03/05/ldDecay.html">计算LD decay(LD衰减)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 29, 2015</span>
+<h2 id="readsmirrnadatabase-miralignerjar-java17">3 比对reads到mirRNA的database （miraligner.jar, 需使用java1.7）</h2>
 
-        <h2>
-          <a class="post-link" href="/notes/2015/11/29/AffyLRR_BAF.html">从Affy Axiom的CEL文件导出LRR和BAF</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 12, 2015</span>
+<div class="highlighter-rouge"><pre class="highlight"><code>
+java -Xmx 16g -jar miraligner.jar -sub 1 -trim 3 -add 3 -s hsa -i input_trimmed.fq -db DB -o output
 
-        <h2>
-          <a class="post-link" href="/notes/2015/08/12/SNPTEST.html">和PLINK一样简单好用的SNPTEST</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 25, 2015</span>
+#output: output.mirna
 
-        <h2>
-          <a class="post-link" href="/notes/2015/05/25/manhattanPlot.html">以R作GWAS的manhattan图</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 14, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/14/AffyPipe.html">Affy SNP芯片CEL文件转化为Plink格式（AffyPipe）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 13, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/13/MDS_PCA_plot.html">Population Structure MDS/PCA plot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 6, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/06/PCA.html">PCA方法分析群体遗传结构</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 10, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/10/GWAS5.html">利用PLINK进行GWAS分析（五）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 7, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/07/GWAS4mds.html">利用PLINK进行GWAS分析（四）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/05/GWAS3qc.html">利用PLINK进行GWAS分析（三）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 4, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/04/GWAS2file.html">利用PLINK进行GWAS分析（二）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 3, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/03/GWAS1.html">利用PLINK进行GWAS分析（一）</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
+</code></pre>
 </div>
+
+<p>以上步骤全部参考seqbuster的tutorial。得到的output.mirna文件。本来想使用miraligner.jar 的 <code class="highlighter-rouge">-freq</code> 参数直接输出miRNA的频率，但不知道为什么输出文件不能被isomiRs包直接读取，试了几次后干脆直接在output.mirna基础上重新统计frequency。</p>
+
+<h2 id="post-analysis-with-r-package-isomirs">4 post analysis with R package isomiRs</h2>
+
+<p>bioconductor上的R package <a href="https://bioconductor.org/packages/release/bioc/html/isomiRs.html">isomiRs</a></p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>
+library ( "plyr" )
+
+df &lt;- read.table ( "output.mirna", header=T, comment.chr="!" )
+
+colnames_order = c( "seq","name","freq","mir","start","end","mism","add","t5","t3","s5","s3","DB","ambiguity" )
+
+aa = ddply ( df, ~mir+start+end+mism+add+t5+t3+s5+s3+seq+DB+ambiguity, nrow )
+
+colnames(aa)[13] = "freq"
+
+aa[ , "name"] = paste0 ( aa[ ,'mir'], "_x", aa[ ,"freq"] )
+
+newdf = aa[ , colnames_order ]
+
+write.table ( newdf, file = "isomiRs_input.mirna", sep = "\t", quote=F, row.names=F )
+
+</code></pre>
+</div>
+
+<p>然后用IsomirDataSeqFromFiles读取文件，参考isomiRs包的说明文档进行后续分析。</p>
+
+
+  </div>
+
+</article>
 
       </div>
     </div>

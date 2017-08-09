@@ -6,9 +6,78 @@
 </description>
     <link>http://zhangyy.site/</link>
     <atom:link href="http://zhangyy.site/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 08 Aug 2017 17:27:19 -0400</pubDate>
-    <lastBuildDate>Tue, 08 Aug 2017 17:27:19 -0400</lastBuildDate>
+    <pubDate>Wed, 09 Aug 2017 11:58:03 -0400</pubDate>
+    <lastBuildDate>Wed, 09 Aug 2017 11:58:03 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>seqbuster分析miRNA/isomirs基本流程</title>
+        <description>&lt;p&gt;&lt;a href=&quot;https://github.com/lpantano/seqbuster&quot;&gt;seqbuster&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://seqcluster.readthedocs.io/mirna_annotation.html#processing-of-reads&quot;&gt;tutorial&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;mirna-quality-control&quot;&gt;1 miRNA quality control&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;先用fastQC查看数据情况&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;cutadpt 去除adapter序列，miRNA数据一般只需要去除3’ 的adapter。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;alignmentdatabasedb&quot;&gt;2 准备本地alignment所需的database，放入文件夹“DB”内&lt;/h2&gt;
+
+&lt;p&gt;hairpin.fa and miRNA.str from miRBase site&lt;/p&gt;
+
+&lt;h2 id=&quot;readsmirrnadatabase-miralignerjar-java17&quot;&gt;3 比对reads到mirRNA的database （miraligner.jar, 需使用java1.7）&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+java -Xmx 16g -jar miraligner.jar -sub 1 -trim 3 -add 3 -s hsa -i input_trimmed.fq -db DB -o output
+
+#output: output.mirna
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;以上步骤全部参考seqbuster的tutorial。得到的output.mirna文件。本来想使用miraligner.jar 的 &lt;code class=&quot;highlighter-rouge&quot;&gt;-freq&lt;/code&gt; 参数直接输出miRNA的频率，但不知道为什么输出文件不能被isomiRs包直接读取，试了几次后干脆直接在output.mirna基础上重新统计frequency。&lt;/p&gt;
+
+&lt;h2 id=&quot;post-analysis-with-r-package-isomirs&quot;&gt;4 post analysis with R package isomiRs&lt;/h2&gt;
+
+&lt;p&gt;bioconductor上的R package &lt;a href=&quot;https://bioconductor.org/packages/release/bioc/html/isomiRs.html&quot;&gt;isomiRs&lt;/a&gt;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+library ( &quot;plyr&quot; )
+
+df &amp;lt;- read.table ( &quot;output.mirna&quot;, header=T, comment.chr=&quot;!&quot; )
+
+colnames_order = c( &quot;seq&quot;,&quot;name&quot;,&quot;freq&quot;,&quot;mir&quot;,&quot;start&quot;,&quot;end&quot;,&quot;mism&quot;,&quot;add&quot;,&quot;t5&quot;,&quot;t3&quot;,&quot;s5&quot;,&quot;s3&quot;,&quot;DB&quot;,&quot;ambiguity&quot; )
+
+aa = ddply ( df, ~mir+start+end+mism+add+t5+t3+s5+s3+seq+DB+ambiguity, nrow )
+
+colnames(aa)[13] = &quot;freq&quot;
+
+aa[ , &quot;name&quot;] = paste0 ( aa[ ,&#39;mir&#39;], &quot;_x&quot;, aa[ ,&quot;freq&quot;] )
+
+newdf = aa[ , colnames_order ]
+
+write.table ( newdf, file = &quot;isomiRs_input.mirna&quot;, sep = &quot;\t&quot;, quote=F, row.names=F )
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;然后用IsomirDataSeqFromFiles读取文件，参考isomiRs包的说明文档进行后续分析。&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 09 Aug 2017 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2017/08/09/seqbuster_isomirs.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2017/08/09/seqbuster_isomirs.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
     
       <item>
         <title>利用模拟NGS数据研究kmers的分布</title>
@@ -675,85 +744,6 @@ python AffyPipe.py mycellistfile.txt --plinkACGT&lt;/code&gt;&lt;/pre&gt;&lt;/fi
         <pubDate>Thu, 14 May 2015 00:00:00 -0400</pubDate>
         <link>http://zhangyy.site/notes/2015/05/14/AffyPipe.html</link>
         <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/14/AffyPipe.html</guid>
-        
-        
-        <category>notes</category>
-        
-      </item>
-    
-      <item>
-        <title>Population Structure MDS/PCA plot</title>
-        <description>&lt;p&gt;以ISGC上的&lt;code class=&quot;highlighter-rouge&quot;&gt;SNP50_Breedv2&lt;/code&gt;数据为示例数据，已经是PLINK的PED和MAP格式数据。数据和R codes获得方式：&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#git shell 下使用如下命令直接在本地建立demo_genetics文件夹或者从相应的地址下载数据&lt;/span&gt;
-git clone https://github.com/geneticswithme/demo_genetics.git&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;PLINK_v1.07&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;--mds-plot&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;PLINK_v1.09&lt;/code&gt;的&lt;code class=&quot;highlighter-rouge&quot;&gt;--pca&lt;/code&gt;二选一。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#PLINK_v1.07&lt;/span&gt;
-plink --sheep --file SNP50_Breedv2 --cluster --mds-plot 10 
-&lt;span class=&quot;c&quot;&gt;#生成plink.mds文件是作图文件&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#PLINK_v1.09&lt;/span&gt;
-plink --sheep --file SNP50_Breedv2 --pca
-&lt;span class=&quot;c&quot;&gt;#生成plink.eigenval 和plink.eigenvec文件，eigenvec文件是作图文件&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;用R作图&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#首先进入本地的demo_genetics目录下，&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#setwd(&quot;#path_to_demo_genetics&quot;)&lt;/span&gt;
-setwd&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;G:/mywork/demo_genetics&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-list.files&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#查看该目录下的文件，至少要有plink.mds和plink.eigenvec文件&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#对plink.mds 文件作图&lt;/span&gt;
-mds &amp;lt;- read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mds.plink&quot;&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;T&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-head&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#查看数据前几行&lt;/span&gt;
-attach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# 以列名作为变量名将每列数据载入R内存中。&lt;/span&gt;
-table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#查看家系及数目，这里的家系即是各个品种&lt;/span&gt;
-plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C1, C2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#以第一mds和第二mds分别为x y坐标做散点图&lt;/span&gt;
-legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#标注上图例&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#以pdf格式保存作图结果&lt;/span&gt;
-pdf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.pdf&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C1, C2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
-legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
-dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#以png格式保存作图结果&lt;/span&gt;
-png&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.png&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;C1, C2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
-legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;bottomleft&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FID&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
-dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-detach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#卸载R中mds数据框的列变量名&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;#对plink.eigenvec文件作图，基本上与上面相同，只需注意文件格式&lt;/span&gt;
-pca&amp;lt;- read.table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mds.eigenvec&quot;&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-colnames&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;lt;-c&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;PopName&quot;&lt;/span&gt;,&lt;span class=&quot;s2&quot;&gt;&quot;Id&quot;&lt;/span&gt;,paste&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;PCA&quot;&lt;/span&gt;,1:20,sep&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
-head&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-attach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-table&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PCA1, PCA2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;#以第一mds和第二mds分别为x y坐标做散点图&lt;/span&gt;
-legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;topright&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#标注上图例&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#以pdf格式保存作图结果&lt;/span&gt;
-pdf&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.pdf&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PCA1, PCA2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
-legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;topright&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
-dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;#以png格式保存作图结果&lt;/span&gt;
-png&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;mdsplot.png&quot;&lt;/span&gt;,width&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400,height&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;400&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-plot&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PCA1, PCA2, &lt;span class=&quot;nv&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt; 
-legend&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;topright&quot;&lt;/span&gt;,bty&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;n, &lt;span class=&quot;nv&quot;&gt;cex&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8, &lt;span class=&quot;nv&quot;&gt;legend&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, &lt;span class=&quot;nv&quot;&gt;border&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;F, &lt;span class=&quot;nv&quot;&gt;fill&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;unique&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;as.factor&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;PopName&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;
-dev.off&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
-detach&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;pca&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;结果如下所示：
-&lt;img src=&quot;/images/20150513-mds_pca_plot.png&quot; alt=&quot;mds_pca_plot&quot; /&gt;
-MDS和PCA方法分析群体结构是一样的效果，个体之间都按照所属群体聚成几大类。&lt;/p&gt;
-
-</description>
-        <pubDate>Wed, 13 May 2015 00:00:00 -0400</pubDate>
-        <link>http://zhangyy.site/notes/2015/05/13/MDS_PCA_plot.html</link>
-        <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/13/MDS_PCA_plot.html</guid>
         
         
         <category>notes</category>
