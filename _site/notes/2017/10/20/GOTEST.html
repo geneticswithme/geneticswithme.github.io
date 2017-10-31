@@ -6,12 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>geneticswithme</title>
-  <meta name="description" content="Yuanyuan Zhang, a ph.D student struggling on Animal Genetics.
-">
+  <title>GO enrichment Test</title>
+  <meta name="description" content="仅供参考。GO enrichment检验方法一般是超几何分布检验，虽然原理简单但是经常发现不同软件的结果差别很大。这次对常用的三个软件，clusterProfiler，DAVID和BINGO，简单测试了一下GO enrichment在Cellular Component类别上的结果差别。">
 
   <link rel="stylesheet" href="/css/main.css">
-  <link rel="canonical" href="http://zhangyy.site/">
+  <link rel="canonical" href="http://zhangyy.site/notes/2017/10/20/GOTEST.html">
   <link rel="alternate" type="application/rss+xml" title="geneticswithme" href="http://zhangyy.site/feed.xml">
 <script type="text/javascript"
   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -61,161 +60,92 @@
 
     <div class="page-content">
       <div class="wrapper">
-        <div class="home">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <h1 class="page-heading">Posts</h1>
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">GO enrichment Test</h1>
+    <p class="post-meta"><time datetime="2017-10-20T00:00:00-04:00" itemprop="datePublished">Oct 20, 2017</time></p>
+  </header>
 
-  <ul class="post-list">
-    
-      <li>
-        <span class="post-meta">Oct 20, 2017</span>
+  <div class="post-content" itemprop="articleBody">
+    <p>仅供参考。
+GO enrichment检验方法一般是超几何分布检验，虽然原理简单但是经常发现不同软件的结果差别很大。这次对常用的三个软件，clusterProfiler，DAVID和BINGO，简单测试了一下GO enrichment在Cellular Component类别上的结果差别。</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2017/10/20/GOTEST.html">GO enrichment Test</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 9, 2017</span>
+<p>随机生成240的human gene entrez ID，
+<a href="https://github.com/geneticswithme/demo_genetics/blob/master/GeneList.txt">文件</a>
+geneList.txt。</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2017/08/09/seqbuster_isomirs.html">seqbuster分析miRNA/isomirs基本流程</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 8, 2017</span>
+<p>P值多重检验校正方法，FDR（BH）adjustment。</p>
 
-        <h2>
-          <a class="post-link" href="/notes/2017/08/08/wgsim_kmers.html">利用模拟NGS数据研究kmers的分布</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 2, 2017</span>
+<h1 id="clusterprofiler-r-bioconductor-package">1 clusterProfiler， R bioconductor package。</h1>
 
-        <h2>
-          <a class="post-link" href="/notes/2017/08/02/WGCNA_samplesTest.html">WGCNA scale-free测试</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Sep 8, 2016</span>
+<div class="highlighter-rouge"><pre class="highlight"><code>library("clusterProfiler")
+entrez_ID&lt;-read.table("GeneList.txt",header=T,stringsAsFactors=F)[,1]
+enrich_GOs&lt;-enrichGO(gene=entrez_ID,organism="human",ont="CC",pvalueCutoff=0.05,readable=TRUE) 
+clusterProfiler_output=enrich_GOs@result
 
-        <h2>
-          <a class="post-link" href="/notes/2016/09/08/LD_Ne.html">Estimate recombinate rate using genome-wide SNPs</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Jul 12, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2016/07/12/geneticsDist.html">Reynolds distance</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Mar 5, 2016</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2016/03/05/ldDecay.html">计算LD decay(LD衰减)</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Nov 29, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/11/29/AffyLRR_BAF.html">从Affy Axiom的CEL文件导出LRR和BAF</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Aug 12, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/08/12/SNPTEST.html">和PLINK一样简单好用的SNPTEST</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 25, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/25/manhattanPlot.html">以R作GWAS的manhattan图</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 14, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/14/AffyPipe.html">Affy SNP芯片CEL文件转化为Plink格式（AffyPipe）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 13, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/13/MDS_PCA_plot.html">Population Structure MDS/PCA plot</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">May 6, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/05/06/PCA.html">PCA方法分析群体遗传结构</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 10, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/10/GWAS5.html">利用PLINK进行GWAS分析（五）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 7, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/07/GWAS4mds.html">利用PLINK进行GWAS分析（四）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 5, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/05/GWAS3qc.html">利用PLINK进行GWAS分析（三）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 4, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/04/GWAS2file.html">利用PLINK进行GWAS分析（二）</a>
-        </h2>
-      </li>
-    
-      <li>
-        <span class="post-meta">Apr 3, 2015</span>
-
-        <h2>
-          <a class="post-link" href="/notes/2015/04/03/GWAS1.html">利用PLINK进行GWAS分析（一）</a>
-        </h2>
-      </li>
-    
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="/feed.xml">via RSS</a></p>
-
+</code></pre>
 </div>
+
+<p>结果得到5个显著富集的GO term，具体信息省略。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>GOTERM geneCount
+GO:0097381	5
+GO:0001750	6
+GO:0045121	11
+GO:0098857	11
+</code></pre>
+</div>
+
+<h1 id="david-gotermccall-adjustment-method-fdr">2 使用David GOTERM_CC_ALL (adjustment method FDR)</h1>
+
+<p>FDR校正后，只有两个显著Term，放宽条件为Benjamini adjustment，多了两个term。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>GOTERM geneCount
+GO:0043226 169
+GO:0043227 159
+GO:0097381 5 (Benjamini)
+GO:0001750 7 (Benjamini)
+</code></pre>
+</div>
+
+<h1 id="cytoscape-plugin-bingo">3 使用cytoscape 的plugin， BINGO</h1>
+<p>7个显著Term，但是GO term内注释到的基因数目比以上两个软件得到的较少，估计是GO database的问题。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>GOTERM geneCount
+GO:0044424 148   
+GO:0005622 149
+GO:0022627 4
+GO:0070013 33  
+GO:0005654 22 
+GO:0031974 34 
+GO:0044451 16 
+</code></pre>
+</div>
+
+<h1 id="overrepresented-terms">比较三个软件得到的 overrepresented Terms之间的关系</h1>
+<p>红色，clusterProfiler显著Terms。浅蓝，David显著Terms。绿色，BINGO显著Terms。</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>library("RamiGO")
+goIDs &lt;- c("GO:0097381","GO:0001750","GO:0045121","GO:0098857",
+           "GO:0043226","GO:0043227","GO:0044424","GO:0005622","GO:0022627",
+           "GO:0070013","GO:0005654","GO:0031974","GO:0044451")
+color &lt;- c(rep("red",4),rep("blue",2),rep("green",7))
+pngRes &lt;- getAmigoTree(goIDs=goIDs, color=color, filename="example", picType="png", saveResult=TRUE)
+</code></pre>
+</div>
+
+<p><a href="https://github.com/geneticswithme/demo_genetics/blob/master/GO_test.png">结果大图</a>
+<img src="/images/GO_test.png" alt="output" /></p>
+
+<p>clusterProfiler富集的是direct terms。background用的是org.Hs.eg.db, 一年两次更新。</p>
+
+<p>David的结果，选的GOTERM_CC_ALL的结果且用FDR adjustment，因为direct terms中没有显著的富集GOTERMs。用DAVID做GO enrichment时候还是适合选Benjamini的adjustment，Benjamini adjustment显著的GO terms有两个与clusterProfiler一致，GO:0097381和GO:0001750。</p>
+
+
+  </div>
+
+</article>
 
       </div>
     </div>

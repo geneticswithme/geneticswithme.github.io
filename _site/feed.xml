@@ -6,9 +6,95 @@
 </description>
     <link>http://zhangyy.site/</link>
     <atom:link href="http://zhangyy.site/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Wed, 09 Aug 2017 11:58:03 -0400</pubDate>
-    <lastBuildDate>Wed, 09 Aug 2017 11:58:03 -0400</lastBuildDate>
+    <pubDate>Tue, 31 Oct 2017 18:21:31 -0400</pubDate>
+    <lastBuildDate>Tue, 31 Oct 2017 18:21:31 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
+    
+      <item>
+        <title>GO enrichment Test</title>
+        <description>&lt;p&gt;仅供参考。
+GO enrichment检验方法一般是超几何分布检验，虽然原理简单但是经常发现不同软件的结果差别很大。这次对常用的三个软件，clusterProfiler，DAVID和BINGO，简单测试了一下GO enrichment在Cellular Component类别上的结果差别。&lt;/p&gt;
+
+&lt;p&gt;随机生成240的human gene entrez ID，
+&lt;a href=&quot;https://github.com/geneticswithme/demo_genetics/blob/master/GeneList.txt&quot;&gt;文件&lt;/a&gt;
+geneList.txt。&lt;/p&gt;
+
+&lt;p&gt;P值多重检验校正方法，FDR（BH）adjustment。&lt;/p&gt;
+
+&lt;h1 id=&quot;clusterprofiler-r-bioconductor-package&quot;&gt;1 clusterProfiler， R bioconductor package。&lt;/h1&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;library(&quot;clusterProfiler&quot;)
+entrez_ID&amp;lt;-read.table(&quot;GeneList.txt&quot;,header=T,stringsAsFactors=F)[,1]
+enrich_GOs&amp;lt;-enrichGO(gene=entrez_ID,organism=&quot;human&quot;,ont=&quot;CC&quot;,pvalueCutoff=0.05,readable=TRUE) 
+clusterProfiler_output=enrich_GOs@result
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;结果得到5个显著富集的GO term，具体信息省略。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GOTERM geneCount
+GO:0097381	5
+GO:0001750	6
+GO:0045121	11
+GO:0098857	11
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;david-gotermccall-adjustment-method-fdr&quot;&gt;2 使用David GOTERM_CC_ALL (adjustment method FDR)&lt;/h1&gt;
+
+&lt;p&gt;FDR校正后，只有两个显著Term，放宽条件为Benjamini adjustment，多了两个term。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GOTERM geneCount
+GO:0043226 169
+GO:0043227 159
+GO:0097381 5 (Benjamini)
+GO:0001750 7 (Benjamini)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;cytoscape-plugin-bingo&quot;&gt;3 使用cytoscape 的plugin， BINGO&lt;/h1&gt;
+&lt;p&gt;7个显著Term，但是GO term内注释到的基因数目比以上两个软件得到的较少，估计是GO database的问题。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;GOTERM geneCount
+GO:0044424 148   
+GO:0005622 149
+GO:0022627 4
+GO:0070013 33  
+GO:0005654 22 
+GO:0031974 34 
+GO:0044451 16 
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h1 id=&quot;overrepresented-terms&quot;&gt;比较三个软件得到的 overrepresented Terms之间的关系&lt;/h1&gt;
+&lt;p&gt;红色，clusterProfiler显著Terms。浅蓝，David显著Terms。绿色，BINGO显著Terms。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;library(&quot;RamiGO&quot;)
+goIDs &amp;lt;- c(&quot;GO:0097381&quot;,&quot;GO:0001750&quot;,&quot;GO:0045121&quot;,&quot;GO:0098857&quot;,
+           &quot;GO:0043226&quot;,&quot;GO:0043227&quot;,&quot;GO:0044424&quot;,&quot;GO:0005622&quot;,&quot;GO:0022627&quot;,
+           &quot;GO:0070013&quot;,&quot;GO:0005654&quot;,&quot;GO:0031974&quot;,&quot;GO:0044451&quot;)
+color &amp;lt;- c(rep(&quot;red&quot;,4),rep(&quot;blue&quot;,2),rep(&quot;green&quot;,7))
+pngRes &amp;lt;- getAmigoTree(goIDs=goIDs, color=color, filename=&quot;example&quot;, picType=&quot;png&quot;, saveResult=TRUE)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/geneticswithme/demo_genetics/blob/master/GO_test.png&quot;&gt;结果大图&lt;/a&gt;
+&lt;img src=&quot;/images/GO_test.png&quot; alt=&quot;output&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;clusterProfiler富集的是direct terms。background用的是org.Hs.eg.db, 一年两次更新。&lt;/p&gt;
+
+&lt;p&gt;David的结果，选的GOTERM_CC_ALL的结果且用FDR adjustment，因为direct terms中没有显著的富集GOTERMs。用DAVID做GO enrichment时候还是适合选Benjamini的adjustment，Benjamini adjustment显著的GO terms有两个与clusterProfiler一致，GO:0097381和GO:0001750。&lt;/p&gt;
+
+</description>
+        <pubDate>Fri, 20 Oct 2017 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2017/10/20/GOTEST.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2017/10/20/GOTEST.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
     
       <item>
         <title>seqbuster分析miRNA/isomirs基本流程</title>
@@ -308,15 +394,15 @@ h5dump -y -d histogram/histogram test.h5 | grep &quot;^\ *[0-9]&quot; |tr -d &qu
 &lt;p&gt;&lt;img src=&quot;/images/sample9_test5_sft.png&quot; alt=&quot;test15&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;5次随机抽取12个样本，得到的softpower结果如下
-&lt;img src=&quot;/images/sample9_test1_sft.png&quot; alt=&quot;test16&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/images/sample12_test1_sft.png&quot; alt=&quot;test16&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/sample9_test2_sft.png&quot; alt=&quot;test17&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/sample12_test2_sft.png&quot; alt=&quot;test17&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/sample9_test3_sft.png&quot; alt=&quot;test18&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/sample12_test3_sft.png&quot; alt=&quot;test18&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/sample9_test4_sft.png&quot; alt=&quot;test19&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/sample12_test4_sft.png&quot; alt=&quot;test19&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/sample9_test5_sft.png&quot; alt=&quot;test20&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/sample12_test5_sft.png&quot; alt=&quot;test20&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;可以看到，参与计算的样本数越多，得到的softpower结果越容易达到scale-free。&lt;/p&gt;
 
@@ -667,83 +753,6 @@ manhattan这个函数的输入必须为dataframe，且包含“CHR”，“SNP�
         <pubDate>Mon, 25 May 2015 00:00:00 -0400</pubDate>
         <link>http://zhangyy.site/notes/2015/05/25/manhattanPlot.html</link>
         <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/25/manhattanPlot.html</guid>
-        
-        
-        <category>notes</category>
-        
-      </item>
-    
-      <item>
-        <title>Affy SNP芯片CEL文件转化为Plink格式（AffyPipe）</title>
-        <description>&lt;p&gt;利用AffyPipe工具整理Affy的SNP芯片原始数据为PLINK格式。&lt;/p&gt;
-
-&lt;p&gt;Affymetrix SNP芯片的原始文件为CEL文件，一个CEL文件即是一个个体的全部SNP分型结果。&lt;/p&gt;
-
-&lt;p&gt;分析平台：Ubuntu 12.04 LTS 64位系统&amp;lt;/br&amp;gt;&lt;/p&gt;
-
-&lt;p&gt;准备工作：&amp;lt;/br&amp;gt;
-1、在ubuntu上安装git，并从github上获取AffyPipe软件包&amp;lt;/br&amp;gt;
-&lt;code class=&quot;highlighter-rouge&quot;&gt;Ctrl+Alt+t&lt;/code&gt;打开终端，打开终端时，默认处在家目录下，&lt;code class=&quot;highlighter-rouge&quot;&gt;pwd&lt;/code&gt;命令可以查看当前路径。在终端输入&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo apt-get install git-core&lt;/code&gt;，等待安装完成后，输入&lt;code class=&quot;highlighter-rouge&quot;&gt;git&lt;/code&gt;后回车，出现如下画面说明git安装成功。
-&lt;img src=&quot;/assets/images/20150513-git.png&quot; alt=&quot;git&quot; /&gt;
-安装成功后，便可以用git从github上抓取AffyPipe软件包了。输入
-&lt;code class=&quot;highlighter-rouge&quot;&gt;git clone https://github.com/nicolazzie/AffyPipe&lt;/code&gt;即在当前路径下新建了一个叫”AffyPipe”的文件夹，文件夹中情况
-&lt;img src=&quot;/assets/images/20150513-AffyPipe1.png&quot; alt=&quot;git&quot; /&gt;
-如果不想安装git，可以直接从”https://github.com/nicolazzie/AffyPipe”下载AffyPipe的zip包，解压后是一样的。&lt;/p&gt;
-
-&lt;p&gt;2、仔细阅读README.md文档，然后下面都可以不看了。&lt;/p&gt;
-
-&lt;p&gt;3、注册Affy官网账号并登陆&lt;code class=&quot;highlighter-rouge&quot;&gt;http://affymetrix.com&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;4、从Affymetrix官网下载所需文件。&amp;lt;/br&amp;gt;
-4.1 Affy chicken芯片的解析文件。”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt; Library Files”中下载”Axiom Genome Wide Chicken Analysis Files”(约59MB)，下载下来的文件其实是&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken_Analysis.r1.zip&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;4.2 Affy chicken芯片的位点注释文件。”Products &amp;gt; Microarry Solutions &amp;gt; DNA Analysis Solutions &amp;gt; Agrigenomics Solutions &amp;gt; Arrays &amp;gt; Species &amp;gt; Chicken &amp;gt; Axiom® Genome-Wide Chicken Genotyping Array &amp;gt; Technical Documents &amp;gt;Current NetAffx Annotation Files”，下载CSV格式的注释文件（44MB），实际文件名为&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv.zip&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;4.3 DevNet Tools。”Partners &amp;amp; Programs &amp;gt; Developers’ Network &amp;gt; DevNet Tools&lt;code class=&quot;highlighter-rouge&quot;&gt;下载&lt;/code&gt;APT-tools”（目前是apt-1.17.0-x86_64-intel-linux.zip）和&lt;code class=&quot;highlighter-rouge&quot;&gt;SNPolisher&lt;/code&gt;。
-    (&lt;a href=&quot;www.affymetrix.com/estore/partners_programs/programs/developer/tools/devnettools.affx&quot;&gt;Affymetrix DevNet Tools&lt;/a&gt;)&lt;/p&gt;
-
-&lt;p&gt;5、改造”AFFYTOOLS”文件夹内容。该目录&lt;code class=&quot;highlighter-rouge&quot;&gt;~/AffyPipe/AFFYTOOLS/&lt;/code&gt;下只保留&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-1.15.2-x86_64-intel-linux&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;SNPolisher_package&lt;/code&gt;两个子文件夹，其它的统统删掉。&amp;lt;/br&amp;gt;
-5.1 解压4.1中下载的&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken_Analysis.r1.zip&lt;/code&gt;和4.2中下载的&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_GW_GT_Chicken.na35.annot.csv.zip&lt;/code&gt;，将全部文件放入”~/AffyPipe/AFFYTOOLS/”路径下。&amp;lt;/br&amp;gt;
-5.2 解压4.3中下载的&lt;code class=&quot;highlighter-rouge&quot;&gt;apt-1.17.0-x86_64-intel-linux.zip&lt;/code&gt;，将全部文件放入”~/AffyPipe/AFFYTOOLS/apt-1.15.2-x86_64-intel-linux”路径下。&lt;/p&gt;
-
-&lt;p&gt;6、在R中安装&lt;code class=&quot;highlighter-rouge&quot;&gt;SNPolisher&lt;/code&gt;。打开R，运行&lt;code class=&quot;highlighter-rouge&quot;&gt;install.packages(&#39;[your path to file: SNPolisher[[version]].tar.gz]&#39;,repos=NULL,type=&#39;source&#39;)&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;7、将自己的CEL文件（有可能是CEL.zip的压缩文件，需解压），全部放入”~/AffyPipe”路径下。&lt;/p&gt;
-
-&lt;p&gt;8、打开终端&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/AffyPipe
-chmod +x createcelfile.sh
-createcelfile.sh &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.CEL&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;在&lt;code class=&quot;highlighter-rouge&quot;&gt;~/AffyPipe&lt;/code&gt;路径下生成&lt;code class=&quot;highlighter-rouge&quot;&gt;mycellistfile.txt&lt;/code&gt;文件。&lt;/p&gt;
-
-&lt;p&gt;9、修改”~/AffyPipe” 路径下的 “PARM_species.inp” 文件内容。&lt;code class=&quot;highlighter-rouge&quot;&gt;SPEC_prefix = Axiom_GW_GT_Chiken&lt;/code&gt;，&lt;code class=&quot;highlighter-rouge&quot;&gt;SPEC_version = r1&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;SPEC_annotation = Axiom_GW_GT_Chicken.na35.annot.csv&lt;/code&gt;。
-现在文件夹AffyPipe中结构是这样：&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;AffyPipe- - AFFYTOOLS
-		|
-		- -	Affypipe.py
-		|
-		- - creatcelfile.sh
-		|
-		- - &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.CEL&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;10、运行AffyPipe.py程序。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/AffyPipe
-python AffyPipe.py mycellistfile.txt --plinkACGT&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;这一步将CEL中的基因型数据整理出来并按照AffyPipe默认的条件质控后，输出plink的数据格式文件&lt;code class=&quot;highlighter-rouge&quot;&gt;Axiom_genotypes_PLINKfmt.ped/map&lt;/code&gt;。如果需要修改质控条件，参考&lt;code class=&quot;highlighter-rouge&quot;&gt;python AffyPipe.py -h&lt;/code&gt;。&lt;/p&gt;
-
-&lt;p&gt;11、运行PLINK，将”ped/map”文件转化为”bed/bim/fam”文件格式，&lt;code class=&quot;highlighter-rouge&quot;&gt;plink --file Axiom_genotypes_PLINKfmt --make-bed&lt;/code&gt;，修改fam文件中的个体表型等信息。&lt;/p&gt;
-
-&lt;p&gt;到此就完成了Affy SNP芯片的原始数据转化成PLINK的格式的全部过程。&lt;/p&gt;
-
-</description>
-        <pubDate>Thu, 14 May 2015 00:00:00 -0400</pubDate>
-        <link>http://zhangyy.site/notes/2015/05/14/AffyPipe.html</link>
-        <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/14/AffyPipe.html</guid>
         
         
         <category>notes</category>
