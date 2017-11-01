@@ -6,8 +6,8 @@
 </description>
     <link>http://zhangyy.site/</link>
     <atom:link href="http://zhangyy.site/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Tue, 31 Oct 2017 18:21:31 -0400</pubDate>
-    <lastBuildDate>Tue, 31 Oct 2017 18:21:31 -0400</lastBuildDate>
+    <pubDate>Tue, 31 Oct 2017 21:40:43 -0400</pubDate>
+    <lastBuildDate>Tue, 31 Oct 2017 21:40:43 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
@@ -433,6 +433,373 @@ Tutorial &lt;a href=&quot;http://zhangyy.site/LD_Ne/&quot;&gt;here&lt;/a&gt;&lt;
       </item>
     
       <item>
+        <title>samtools简明操作指南</title>
+        <description>&lt;p&gt;#samtools&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;计算覆盖度&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;计算比对率&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;reads&quot;&gt;1 统计  参考序列的长度，比对上的reads数目&lt;/h2&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+samtools idxstats in.sam &amp;gt;in.stat
+
+cat in.stat
+
+#    chr1 16616 8633270 0
+
+#    chr2 275406953 3220386 0
+
+#    .....
+
+samtools view -c in.sam #直接输出 number of alignment 
+
+    #44385909
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;the output is TAB-delimited with each line consisting of reference sequence name, sequece length, #mapped reads and #unmapped reads. it is written to stdout.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;in.stat&lt;/em&gt; 中第二列为每条染色体的长度，第三列为比对上的reads数，即alignment数目，因为某些reads会比对至参考序列中的多个位置，所以alignment数目比实际上的reads数目多。&lt;/p&gt;
+
+&lt;p&gt;如果用&amp;lt;font color=red&amp;gt;bowtie&amp;lt;/font&amp;gt;进行mapping，align_summary.txt中的比对记录与samtools idxstats的结果会不一致。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt; samtools view -c in.bam&lt;/code&gt;得到的reads数目同idxstats的结果一致，都是alignments 数目，比实际reads数目多（因为部分reads有多个alignments）&lt;/p&gt;
+
+&lt;p&gt;##2 samtools中的flag&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Flag&lt;/td&gt;
+      &lt;td&gt;Chr&lt;/td&gt;
+      &lt;td&gt;Description&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;|————|————-|&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0001&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;the read is paired in sequencing&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0002&lt;/td&gt;
+      &lt;td&gt;P&lt;/td&gt;
+      &lt;td&gt;the read is mapped in a proper pair&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0004&lt;/td&gt;
+      &lt;td&gt;u&lt;/td&gt;
+      &lt;td&gt;the query sequence itself is unmapped&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0008&lt;/td&gt;
+      &lt;td&gt;U&lt;/td&gt;
+      &lt;td&gt;the mate is unmapped&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0010&lt;/td&gt;
+      &lt;td&gt;R&lt;/td&gt;
+      &lt;td&gt;strand of the mate&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0040&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;the read is the first read in a pair&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0080&lt;/td&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;the read is the second read in a pair&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0100&lt;/td&gt;
+      &lt;td&gt;s&lt;/td&gt;
+      &lt;td&gt;the alignment is not primary&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0200&lt;/td&gt;
+      &lt;td&gt;f&lt;/td&gt;
+      &lt;td&gt;the read fails platform/vendor quality checks&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x0400&lt;/td&gt;
+      &lt;td&gt;d&lt;/td&gt;
+      &lt;td&gt;the read is either a PCR or an optical duplicate&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;新的document&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;flag&lt;/td&gt;
+      &lt;td&gt;CHR&lt;/td&gt;
+      &lt;td&gt;Description&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;—|—|—&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x1&lt;/td&gt;
+      &lt;td&gt;PAIRED&lt;/td&gt;
+      &lt;td&gt;paired-end (or multiple-segment) sequencing technology&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x2&lt;/td&gt;
+      &lt;td&gt;PROPER_PAIR&lt;/td&gt;
+      &lt;td&gt;each segment properly aligned according to the aligner&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x4&lt;/td&gt;
+      &lt;td&gt;UNMAP&lt;/td&gt;
+      &lt;td&gt;segment unmapped&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x8&lt;/td&gt;
+      &lt;td&gt;MUNMAP&lt;/td&gt;
+      &lt;td&gt;next segment in the template unmapped&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x10&lt;/td&gt;
+      &lt;td&gt;REVERSE&lt;/td&gt;
+      &lt;td&gt;SEQ is reverse complemented&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x20&lt;/td&gt;
+      &lt;td&gt;MREVERSE&lt;/td&gt;
+      &lt;td&gt;SEQ of the next segment in the template is reverse complemented&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x40&lt;/td&gt;
+      &lt;td&gt;READ1&lt;/td&gt;
+      &lt;td&gt;the first segment in the template&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x80&lt;/td&gt;
+      &lt;td&gt;READ2&lt;/td&gt;
+      &lt;td&gt;the last segment in the template&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x100&lt;/td&gt;
+      &lt;td&gt;SECONDARY&lt;/td&gt;
+      &lt;td&gt;secondary alignment&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x200&lt;/td&gt;
+      &lt;td&gt;QCFAIL&lt;/td&gt;
+      &lt;td&gt;not passing quality controls&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x400&lt;/td&gt;
+      &lt;td&gt;DUP&lt;/td&gt;
+      &lt;td&gt;PCR or optical duplicate&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;0x800&lt;/td&gt;
+      &lt;td&gt;SUPPLEMENTARY&lt;/td&gt;
+      &lt;td&gt;supplementary alignment&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;###2.1 samtools view -f 和 -F&lt;/p&gt;
+
+&lt;p&gt;samtools中的view工具使用&amp;lt;font color=red&amp;gt;-f INT&amp;lt;/font&amp;gt;来依照INT与标记致保留reads，使用&amp;lt;font color=red&amp;gt;-F INT&amp;lt;/font&amp;gt;来跳过reads。当然我们还可使用它们来过滤其它的信息。比如我们想知道有多少paired end reads有mate并且都有map时，可以使用-f 1 -F 12来过滤。&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+
+samtools view -c -f 1 -F 12 test.bam
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;其中-f 1指定只包含那些paired end reads，-F 12是不包含那些unmapped(flag 0x0004)以及mate是unmapped(flag 0x0008)。0x0004 + 0x0008 = 12.&lt;/p&gt;
+
+&lt;p&gt;###2.2 samtools flagstat&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+samtools flagstat test.bam
+
+ 44385909 + 0 in total (QC-passed reads + QC-failed reads) #总共的alignment read数（QC-passed + QC-failed）
+
+ 3877817 + 0 secondary #
+
+ 0 + 0 supplementary
+
+ 0 + 0 duplicates
+
+ 44385909 + 0 mapped (100.00%:nan%) #
+
+ 40508090 + 0 paired in sequencing
+
+ 20371796 + 0 read1
+
+ 20136294 + 0 read2
+
+ 36191000 + 0 properly paired (89.34%:nan%)
+
+ 38130076 + 0 with itself and mate mapped
+
+ 2378014 + 0 singletons (5.87%:nan%)
+
+ 1057880 + 0 with mate mapped to a different chr
+
+ 146040 + 0 with mate mapped to a different chr (mapQ&amp;gt;=5)
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;calculate-depth&quot;&gt;calculate depth&lt;/h3&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+
+samtools depth -a *bamfile*  |  awk &#39;{sum+=$3} END { print &quot;Average = &quot;,sum/NR}&#39;
+
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;#vcftools、bcftools&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;提取高质量位点&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+samtools mpileup -g -f genomes/NC_008253.fna alignments/sim_reads_aligned.sorted.bam &amp;gt; variants/sim_variants.bcf
+bcftools call -c -v variants/sim_variants.bcf &amp;gt; variants/sim_variants.vcf
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+</description>
+        <pubDate>Sun, 14 Aug 2016 00:00:00 -0400</pubDate>
+        <link>http://zhangyy.site/notes/2016/08/14/samtools.html</link>
+        <guid isPermaLink="true">http://zhangyy.site/notes/2016/08/14/samtools.html</guid>
+        
+        
+        <category>notes</category>
+        
+      </item>
+    
+      <item>
         <title>Reynolds distance</title>
         <description>&lt;p&gt;A pdf of equation for various measures of genetic distance can be download from &lt;a href=&quot;http://www.uwyo.edu/dbmcd/molmark/gendisteqns.pdf&quot;&gt;here&lt;/a&gt;&lt;/p&gt;
 
@@ -714,45 +1081,6 @@ chmod +x snptest_test.sh
         <pubDate>Wed, 12 Aug 2015 00:00:00 -0400</pubDate>
         <link>http://zhangyy.site/notes/2015/08/12/SNPTEST.html</link>
         <guid isPermaLink="true">http://zhangyy.site/notes/2015/08/12/SNPTEST.html</guid>
-        
-        
-        <category>notes</category>
-        
-      </item>
-    
-      <item>
-        <title>以R作GWAS的manhattan图</title>
-        <description>&lt;p&gt;来自gettinggeneticsdone（blogspot）上的一段ManhattanPlot的R代码，稍加修改了一下以方便自己的使用。blogspot被墙了，所以没去找原作者的Rscript地址。&amp;lt;/br&amp;gt;
-我弄得修改版在这里。
-&lt;code class=&quot;highlighter-rouge&quot;&gt;https://github.com/geneticswithme/hello_genetics/blob/master/manhattan_z.R&lt;/code&gt;
-加载上manhattan这个函数后，就可以直接使用这个函数对PLINK关联分析结果文件作manhattan图。
-这里我随机生成一个assoc数据框，以解释manhattan这个函数的使用。&amp;lt;/br&amp;gt;
-manhattan这个函数的输入必须为dataframe，且包含“CHR”，“SNP”，“BP”和“P”这四个header。&lt;/p&gt;
-
-&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-r&quot; data-lang=&quot;r&quot;&gt;&lt;span class=&quot;n&quot;&gt;setwd&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;G:/manhattan/test/&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;manhattan_z.R&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#生成测试用的dataframe
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;set.seed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;data.frame&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;CHR&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-				&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SNP&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;paste&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;SNP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sep&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-				&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;BP&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-				&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;P&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;runif&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;10000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;png&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;manhattan.png&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;par&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mfcol&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;   &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig1
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;red&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;green&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;blue&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ymax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig2&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig2
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ymax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suggestiveline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;genomewideline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;F&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig3&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig3
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;manhattan&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;col&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ymax&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;8&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;suggestiveline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;6&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;genomewideline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;fig4&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;  &lt;/span&gt;&lt;span class=&quot;c1&quot;&gt;#fig4
-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dev.off&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
-
-&lt;p&gt;#哈哈~~没有显著位点（演示数据而已~）
-&lt;img src=&quot;/images/manhattan.png&quot; alt=&quot;pic&quot; /&gt;&lt;/p&gt;
-
-</description>
-        <pubDate>Mon, 25 May 2015 00:00:00 -0400</pubDate>
-        <link>http://zhangyy.site/notes/2015/05/25/manhattanPlot.html</link>
-        <guid isPermaLink="true">http://zhangyy.site/notes/2015/05/25/manhattanPlot.html</guid>
         
         
         <category>notes</category>
