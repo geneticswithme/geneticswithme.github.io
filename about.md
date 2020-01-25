@@ -4,9 +4,9 @@ title: About
 permalink: /about/
 ---
 
-This is the blog built by Yuanyuan Zhang. 
-I am working on animal genetics, most of my work are about animal population genetics and genomics.
-[Twitter](https://twitter.com/quz_44).
+路漫漫其修远兮，吾将上下而求索。
+
+Twitter @[quz_44](https://twitter.com/quz_44).
 GitHub @[geneticswithme](https://github.com/geneticswithme)
 
 
